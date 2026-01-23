@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routers.agendamento_router import router as agendamento_router
+from routers.cliente_router import router as cliente_router
 from database.connection import Base, engine
 
 #Base.metadata.create_all(bind=engine)
@@ -7,3 +8,4 @@ from database.connection import Base, engine
 app = FastAPI(title="API de Agendamento - AutoPro")
 
 app.include_router(agendamento_router)
+app.include_router(cliente_router)

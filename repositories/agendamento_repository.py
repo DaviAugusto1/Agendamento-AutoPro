@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from models.agendamento import Agendamento
+from models import Agendamento
+
 
 def criar_agendamento(db: Session, agendamento: Agendamento):
     db.add(agendamento)

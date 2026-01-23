@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.connection import SessionLocal
-from schemas.agendamento import AgendamentoCreate
+from schemas import AgendamentoCreate
 from services.agendamento_service import criar
 
 router = APIRouter(prefix="/agendamentos", tags=["Agendamentos"])
