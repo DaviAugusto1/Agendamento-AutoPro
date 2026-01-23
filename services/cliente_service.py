@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from models import Cliente
-from repositories.cliente_repository import cadastrar_cliente, consultar_cliente
+from repositories.cliente_repository import cadastrar_cliente, consultar_todos_cliente
 
 def criar(db: Session, nomeService: str, telefoneService: str):
 
@@ -16,4 +16,4 @@ def criar(db: Session, nomeService: str, telefoneService: str):
     return cadastrar_cliente(db, cliente)
 
 def consultar(db: Session):
-    return consultar_cliente(db)
+    return consultar_todos_cliente(db)

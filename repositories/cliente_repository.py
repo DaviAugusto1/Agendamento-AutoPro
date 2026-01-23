@@ -24,6 +24,14 @@ def cadastrar_cliente(db: Session, cliente: Cliente):
     db.refresh(cliente)
     return cliente
 
-def consultar_cliente(db: Session):
+def consultar_todos_cliente(db: Session):
+    
     clientes = db.query(Cliente).all()
     return clientes
+
+def consultar_cliente_porId(db: Session, id):
+    
+    cliente = db.query(Cliente).filter(Cliente.id_cliente == id)
+    return cliente
+
+    

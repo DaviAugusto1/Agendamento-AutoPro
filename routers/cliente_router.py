@@ -14,5 +14,5 @@ def get_db():
         db.close()
 
 @router.get("/")
-def consultar_clientes(db: Session = Depends(get_db)):
+def consultar_todos_clientes(db: Session = Depends(get_db)):
     return consultar(db)
