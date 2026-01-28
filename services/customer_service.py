@@ -21,7 +21,7 @@ def create(db: Session, name: str, phone: str):
         name=formated_name,
         phone_number=phone
     )
-    return customer_repository.create(db, Customer)
+    return customer_repository.create(db, new_costumer)
 
 def get_all(db):
     return customer_repository.get_all(db)

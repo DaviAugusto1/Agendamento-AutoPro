@@ -17,11 +17,11 @@ UPDATE → alterar objeto + commit()
 DELETE → delete() + commit()
 """
 
-def create(db: Session, new_customer: Customer):
-    db.add(new_customer)
+def create(db: Session, customer: Customer):
+    db.add(customer)
     db.commit()
-    db.refresh(new_customer)
-    return new_customer
+    db.refresh(customer)
+    return customer
 
 def get_all(db: Session):
     
