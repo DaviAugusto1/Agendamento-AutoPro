@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.connection import SessionLocal
-from schemas import AgendamentoCreate
-from services.agendamento_service import criar
+from schemas import booking
+from services.booking_service import create
 
-router = APIRouter(prefix="/agendamentos", tags=["Agendamentos"])
+router = APIRouter(prefix="/bookings", tags=["bookings"])
 
 def get_db():
     db = SessionLocal()
@@ -14,13 +14,13 @@ def get_db():
         db.close()
 
 @router.post("/")
-def criar_agendamento(agendamento: AgendamentoCreate, db: Session = Depends(get_db)):
+def bookingCreate(booking: booking.bookingCreate, db: Session = Depends(get_db)):
     try:
-        return criar(
+        return create(
             db,
-            agendamento.nome_cliente,
-            agendamento.carro,
-            agendamento.data_hora
+            booking.customer_name,
+            booking.car,
+            booking.date
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
