@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.connection import SessionLocal
-from schemas import CustomerCreate
+from schemas import CustomerCreate, CustomerResponse
 from services.customer_service import get_all, get_by_id, create
 
 router = APIRouter(prefix="/customer", tags=["Customer"])
@@ -21,7 +21,7 @@ def get_all_customers(db: Session = Depends(get_db)):
 def get_customer_by_id(id: int, db: Session = Depends(get_db)):
     return get_by_id(id, db)
 
-@router.post("/")
+@router.post("/", reponse_model=CustomerResponse, status_code=201)
 def customerCreate(customer: CustomerCreate, db: Session = Depends(get_db)):
     try:
         return create(

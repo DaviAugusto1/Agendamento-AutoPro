@@ -5,10 +5,10 @@ from repositories import customer_repository
 
 def create(db: Session, name: str, phone: str):
 
-    if len(phone) > 14:
+    if len(phone) != 14:
         raise HTTPException(
             status_code=400,
-            detail="Telefone deve ter obrigatoriamente 14 digitos!"
+            detail="Telefone deve ter 14 digitos!"
         )
 
     formated_name = name.split()
