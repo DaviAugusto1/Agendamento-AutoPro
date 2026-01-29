@@ -17,7 +17,7 @@ UPDATE → alterar objeto + commit()
 DELETE → delete() + commit()
 """
 
-def create(db: Session, customer: Customer):
+def create(customer: Customer, db: Session):
     db.add(customer)
     db.commit()
     db.refresh(customer)
@@ -39,4 +39,11 @@ def get_by_Id(customerId: int, db: Session):
     )
     return customer_get
 
-    
+def get_by_phone_and_name(name: str, phone: str, db: Session):
+    customer_get = (
+        db.query(Customer)
+        .filter(Customer.name == name, 
+                Customer.phone_number == phone)
+        .first()
+    )
+    return customer_get

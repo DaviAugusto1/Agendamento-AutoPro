@@ -1,11 +1,12 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 from models import Customer
 from repositories import customer_repository
 
 def create(db: Session, name: str, phone: str):
-
-    if len(phone) != 14:
+    
+    if len(phone) != 13:
         raise HTTPException(
             status_code=400,
             detail="Telefone deve ter 14 digitos!"
@@ -17,12 +18,19 @@ def create(db: Session, name: str, phone: str):
             formated_name[i] = name_part.capitalize()
     formated_name = " ".join(formated_name)
     
-    new_costumer = Customer(
+    existing_customer = customer_repository.get_by_phone_and_name(formated_name, phone, db)
+    
+    new_customer = Customer(
         name=formated_name,
         phone_number=phone
     )
-    return customer_repository.create(db, new_costumer)
-
+    
+    try:
+        return customer_repository.create(db, new_customer)
+    except IntegrityError:
+        db.rollback()
+        return existing_customer
+    
 def get_all(db):
     return customer_repository.get_all(db)
 

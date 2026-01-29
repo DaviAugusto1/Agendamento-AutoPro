@@ -13,15 +13,15 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/")
+@router.get("/", response_model=list[CustomerResponse], status_code=201)
 def get_all_customers(db: Session = Depends(get_db)):
     return get_all(db)
 
-@router.get("/byId/{id}")
+@router.get("/byId/{id}", response_model=CustomerResponse)
 def get_customer_by_id(id: int, db: Session = Depends(get_db)):
     return get_by_id(id, db)
 
-@router.post("/", reponse_model=CustomerResponse, status_code=201)
+@router.post("/", response_model=CustomerResponse, status_code=201)
 def customerCreate(customer: CustomerCreate, db: Session = Depends(get_db)):
     try:
         return create(
