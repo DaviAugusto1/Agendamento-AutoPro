@@ -4,7 +4,7 @@ from database.connection import SessionLocal
 from schemas import booking
 from services.booking_service import create
 
-router = APIRouter(prefix="/bookings", tags=["bookings"])
+router = APIRouter(prefix="/bookings", tags=["Bookings"])
 
 def get_db():
     db = SessionLocal()

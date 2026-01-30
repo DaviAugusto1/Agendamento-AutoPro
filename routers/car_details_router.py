@@ -4,7 +4,7 @@ from database.connection import SessionLocal
 from schemas import Car_detailsCreate, Car_detailsResponse 
 from services.car_details_service import get_all, get_by_id, create
 
-router = APIRouter(prefix="/car_details", tags=["car_details"])
+router = APIRouter(prefix="/car_details", tags=["Car_details"])
 
 def get_db():
     db = SessionLocal()
