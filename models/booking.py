@@ -4,10 +4,10 @@ from database.connection import Base
 
 class Booking(Base):
     __tablename__ = "booking"
-    id_booking = Column(Integer, primary_key=True, index=True, nullable=False)
-    id_details = Column(Integer, ForeignKey("car_details.detail_id"), nullable=False)
+    booking_id = Column(Integer, primary_key=True, index=True, nullable=False)
+    details_id = Column(Integer, ForeignKey("car_details.detail_id"), nullable=False)
     reason = Column(String(20), nullable=False)
     car_plate = Column(String(7), nullable=False)
-    dt_booking = Column(Date, nullable=False)
-    hr_booking = Column(Time, nullable=False)
+    booking_dt = Column(Date, nullable=False)
+    booking_hr = Column(Time, nullable=False)
     
