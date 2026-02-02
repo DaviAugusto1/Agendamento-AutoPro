@@ -26,7 +26,7 @@ def create(db: Session, name: str, phone: str):
     )
     
     try:
-        return customer_repository.create(db, new_customer)
+        return customer_repository.create(new_customer, db)
     except IntegrityError:
         db.rollback()
         return existing_customer

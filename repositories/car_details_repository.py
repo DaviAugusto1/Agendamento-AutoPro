@@ -34,7 +34,7 @@ def get_by_id(db: Session, car_details_id: int):
     )
     return car_details
 
-def get_by_all(db: Session, brand: int, model: str, color: str, year: str):
+def get_by_all(db: Session, brand: int, model: str, color: str, year: str | None):
     car_details = (
         db.query(Car_details)
         .filter(Car_details.brand_id == brand, Car_details.car_color == color, Car_details.car_model == model, Car_details.car_year == year)

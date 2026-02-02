@@ -49,13 +49,25 @@ def count_by_reason_in_week(db: Session, reason: str, start_date: date, end_date
     )
     return booking_count
 
-def get_all_dates_hours(db:Session):
+def get_all_dates_by_reason(db:Session, reason: str):
     results = (
-        db.query(Booking.booking_dt, Booking.booking_hr)
-        .filter(Booking.booking_dt >= date.today())
-        .order_by(Booking.booking_dt, Booking.booking_hr)
+        db.query(Booking.booking_dt)
+        .filter(Booking.booking_dt >= date.today(), Booking.reason == reason)
+        .order_by(Booking.booking_dt)
         .all()
     )
     return results
+
+def get_all_hours_by_day(db: Session, date: date):
+    result = (
+        db.query(Booking.booking_hr)
+        .filter(Booking.booking_dt == date)
+        .order_by(Booking.booking_hr)
+        .all()
+    )
+    return result
+
+
+
     
 

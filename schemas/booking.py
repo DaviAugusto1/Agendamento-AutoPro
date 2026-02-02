@@ -27,3 +27,9 @@ class BookingCreateResponse(BaseModel):
     
     class config:
         from_atributes = True
+
+class BookingDisponibilityResponse(BaseModel):
+    booking_hr: time
+    
+    class config:
+        from_atributes = True
