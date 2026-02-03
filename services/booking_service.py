@@ -22,7 +22,12 @@ def create(db: Session,
     if booking_dt < date.today():
         raise HTTPException(
             status_code=400,
-            detail="Data Inválida"
+            detail="Data Inválida!"
+        )
+    if booking_hr > time.strptime("17:00:00", "%H:%M:%S"):
+        raise HTTPException(
+            status_code=400,
+            detail="Agendamentos são aceitos somente até as 17:00"
         )
     
     
