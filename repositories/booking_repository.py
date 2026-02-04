@@ -2,13 +2,21 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from models import Booking
 from datetime import date
+from sqlalchemy.exc import IntegrityError
 
 
 def Create(db: Session, booking: Booking):
     db.add(booking)
     db.commit()
     db.refresh(booking)
-    return booking
+    try:
+        db.add(booking)
+        db.commit()
+        db.refresh(booking)
+        return booking
+    except IntegrityError:
+        db.rollback()
+        raise
 
 def get_all(db: Session):
     bookings = (
@@ -45,7 +53,7 @@ def count_by_reason_in_week(db: Session, reason: str, start_date: date, end_date
     booking_count = (
         db.query(func.count(Booking.booking_id))
         .filter(Booking.reason == reason, Booking.booking_dt.between(start_date, end_date))
-        .scalar
+        .scalar()
     )
     return booking_count
 
@@ -60,10 +68,26 @@ def get_all_dates_by_reason(db:Session, reason: str):
 
 def get_all_hours_by_day(db: Session, date: date):
     result = (
-        db.query(Booking.booking_hr)
+        db.query(Booking.booking_hr, Booking.reason)
         .filter(Booking.booking_dt == date)
         .order_by(Booking.booking_hr)
         .all()
+    )
+    return result
+
+def count_repairs_by_week(db:Session, start: date, end: date):
+    result = (
+        db.query(func.count(Booking.booking_id))
+        .filter(Booking.reason == "Reparo", Booking.booking_dt.between(start, end), Booking.service != "Martelinho de ouro")
+        .scalar()
+    )
+    return result
+
+def count_martelinhos_by_day(db:Session, day: date):
+    result = (
+        db.query(func.count(Booking.booking_id))
+        .filter(Booking.booking_dt == day, Booking.reason == "Reparo", Booking.service == "Martelinho de ouro")
+        .scalar()
     )
     return result
 

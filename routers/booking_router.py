@@ -21,6 +21,7 @@ def bookingCreate(booking: schema.bookingCreate, db: Session = Depends(get_db)):
             db,
             booking.details_id,
             booking.reason,
+            booking.service,
             booking.car_plate,
             booking.booking_dt,
             booking.booking_hr
