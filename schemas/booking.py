@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import time, date
+from typing import Optional
     
     
 
@@ -36,3 +37,11 @@ class BookingDisponibilityResponse(BaseModel):
     reason: str
     class config:
         from_atributes = True
+
+class BookingUpdate(BaseModel):
+    details_id: Optional[int] = None
+    reason: Optional[str] = None
+    service: Optional[str] = None
+    car_plate: Optional[str] = None
+    booking_dt: Optional[date] = None
+    booking_hr: Optional[time] = None

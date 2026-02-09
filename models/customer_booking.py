@@ -6,4 +6,4 @@ class Customer_booking(Base):
     customer_booking_id = Column(Integer, primary_key=True, index=True, nullable=False)
     booking_id = Column(Integer, ForeignKey("booking.booking_id"), nullable=False)
     customer_id = Column(Integer, ForeignKey("customer.customer_id"), nullable=False)
-    confirmation = Column(String(1), nullable=False)
+    confirmation = Column(String(1), nullable=False, default="N")

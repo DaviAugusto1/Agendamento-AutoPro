@@ -47,3 +47,5 @@ def get_by_phone_and_name(name: str, phone: str, db: Session):
         .first()
     )
     return customer_get
+
+
