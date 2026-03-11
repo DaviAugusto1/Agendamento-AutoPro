@@ -92,8 +92,8 @@ def create(db: Session,
         detail="Agendamento duplicado"
     )
 
-def get_all_hours(db: Session, date: date):
-    return repository.get_all_hours_by_day(db, date)
+def get_all(db:Session):
+    return repository.get_all(db)
 
 def update_booking(
     db: Session,

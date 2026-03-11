@@ -32,9 +32,14 @@ class BookingCreateResponse(BaseModel):
     class config:
         from_atributes = True
 
-class BookingDisponibilityResponse(BaseModel):
-    booking_hr: time
+class BookingResponse(BaseModel):
+    booking_id: int
+    details_id: int
     reason: str
+    service: str | None
+    car_plate: str
+    booking_dt: date
+    booking_hr: time
     class config:
         from_atributes = True
 
