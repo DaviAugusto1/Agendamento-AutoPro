@@ -15,17 +15,14 @@ export type BookingFormData = {
   customer_name: string;
   phone_number: string;
   //CarStep
-  brand_name: string;
+  brand_id: number | "" | null;
   car_model: string;
   car_color: string;
-  car_year: number;
+  car_year: number | "" | null;
   car_plate: string;
   //BookingStep
   reason: string;
   service: string;
   booking_dt: string;
   booking_hr: string;
-
-
-
 }

@@ -1,4 +1,4 @@
 export type Brand = {
-  id: number
-  name: string
+  brand_id: number
+  brand_name: string
 }

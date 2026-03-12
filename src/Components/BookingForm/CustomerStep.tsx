@@ -19,13 +19,13 @@ export function CustomerStep({ formData, setFormData, onNext }: Props) {
 
       <input
         placeholder="Telefone"
-        value={formData.phone}
+        value={formData.phone_number}
         onChange={(e) =>
-          setFormData({ ...formData, phone: e.target.value })
+          setFormData({ ...formData, phone_number: e.target.value })
         }
       />
 
-      <button onClick={onNext}>
+      <button type="button" onClick={onNext}>
         Próximo
       </button>
 

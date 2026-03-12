@@ -9,6 +9,10 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
   booking_dt: string;
   booking_hr: string;
 */
+
+  function handleSubmit(){
+  console.log(formData)
+  } 
   return (
     <div>
 
@@ -30,9 +34,9 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
 
         <button
             type="button"
-            onClick={() => setFormData({ ...formData, service: "Pintura e/ou Funilaria" })}
+            onClick={() => setFormData({ ...formData, service: "Pintura e(ou) Funilaria" })}
         >
-            Pintura e/ou Funilaria
+            Pintura e(ou) Funilaria
         </button>
 
         <input
@@ -51,9 +55,13 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
          }
         />
 
-        <button onClick={onBack}>
+        <button type="button" onClick={onBack}>
         Voltar
-      </button>
+        </button>
+
+        <button type="button" onClick={handleSubmit}>
+          Finalizar Agendamento
+        </button>
         
 
     </div>

@@ -3,17 +3,16 @@ import { CustomerStep } from "./CustomerStep"
 import { CarStep } from "./CarStep"
 import { BookingStep } from "./BookingStep"
 import { StepProgressBar } from "./StepProgressBar"
+import type { BookingFormData } from "../../types/booking"
 export function BookingForm() {
 
-  const [step, setStep] = useState(1)
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<BookingFormData>({
     //ClientStep
     customer_name: "",
     phone_number: "",
 
     //CarStep
-    brand_name: "",
+    brand_id: null,
     car_model: "",
     car_color: "",
     car_year: "",
@@ -26,14 +25,18 @@ export function BookingForm() {
     booking_hr: ""
   })
 
+  const [step, setStep] = useState(1)
+
   function next() {
-    setStep(step + 1)
+    setStep((prev) => Math.min(prev + 1, 3))
   }
 
   function back() {
-    setStep(step - 1)
+    setStep((prev) => Math.max(prev - 1, 1))
   }
 
+  console.log("Renderizando BookingForm, step:", step)
+  
   return (
     <div>
       <StepProgressBar step={step} />
