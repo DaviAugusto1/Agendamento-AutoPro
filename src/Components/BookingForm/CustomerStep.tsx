@@ -4,7 +4,23 @@ type Props = {
   onNext: () => void
 }
 
-export function CustomerStep({ formData, setFormData, onNext }: Props) {
+
+
+export function CustomerStep({ formData, setFormData, onNext }: Props) {7
+
+  function handleNext() {
+    if (!formData.customer_name) {
+      alert("Digite o nome do cliente!")
+      return
+    }
+
+    if (!formData.phone_number) {
+      alert("Digite o telefone!")
+      return
+    }
+
+      onNext()
+  }
 
   return (
     <div>
@@ -25,7 +41,7 @@ export function CustomerStep({ formData, setFormData, onNext }: Props) {
         }
       />
 
-      <button type="button" onClick={onNext}>
+      <button type="button" onClick={handleNext} disabled={!formData.customer_name || !formData.phone_number}>
         Próximo
       </button>
 

@@ -21,6 +21,20 @@ type Brand = {
 
 export function CarStep({formData, setFormData, onNext, onBack}: Props) {
 
+  function handleNext() {
+    if (!formData.car_model) {
+      alert("Digite o modelo do veículo!")
+      return
+    }
+
+    if (!formData.car_plate) {
+      alert("Digite a placa do carro!")
+      return
+    }
+
+    onNext()
+  }
+
 
     const [brands, setBrands] = useState<BrandOption[]>([])
 
@@ -83,9 +97,9 @@ export function CarStep({formData, setFormData, onNext, onBack}: Props) {
         onChange={(e) =>
           setFormData({ ...formData, car_plate: e.target.value })
         }
-        />
+        /> 
 
-        <button type="button" onClick={onNext}>
+        <button type="button" onClick={handleNext} disabled={!formData.car_plate || !formData.car_model}>
           Próximo
         </button>
 
