@@ -1,6 +1,7 @@
 import Select from "react-select"
 import { useEffect, useState } from "react"
 import { getBrands } from "../../services/brand_service"
+import { customStyles } from "./style"
 
 type Props = {
   formData: any
@@ -56,6 +57,7 @@ export function CarStep({formData, setFormData, onNext, onBack}: Props) {
     <div>
 
        <Select
+        styles={customStyles}
         options={brands}
         placeholder="Selecione a marca"
         value={brands.find(b => b.value === formData.brand_id) || null}

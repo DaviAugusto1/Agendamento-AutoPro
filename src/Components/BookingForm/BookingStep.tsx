@@ -1,12 +1,13 @@
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 
 type Props = {
   formData: any
   setFormData: any
   onBack: () => void
 }
+
 
 export function BookingStep({formData, setFormData, onBack}: Props) {
 
@@ -37,7 +38,26 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
 
   const [date, setDate] = useState<Date | null>(null)
 
-  const blockedDates = []
+  const [blockedDates, setBlockedDates] = useState({
+    Martelinho: [],
+    Pintura: []
+  })
+
+  const martelinhoBlocked = useMemo(() => {
+    return blockedDates.Martelinho.map(
+      (date) => new Date(date + "T00:00:00")
+    )
+  }, [blockedDates])
+
+  const pinturaIntervals = useMemo(() => {
+    return blockedDates.Pintura.map((range) => {
+      const monday = new Date(range[0] + "T00:00:00")
+      const friday = new Date(range[1] + "T00:00:00")
+
+      return { start: monday, end: friday }
+    })
+  }, [blockedDates])
+  
 
   return(
     <div>
@@ -67,7 +87,7 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
         <strong>Selecione o serviço desejado</strong>
         <button
             type="button"
-            onClick={() => setFormData({ ...formData, service: "Martelinho de Ouro" })}
+            onClick={() => setFormData({ ...formData, service: "Martelinho de ouro" })}
         >
             Martelinho de Ouro
         </button>
@@ -94,7 +114,8 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
             placeholderText="Selecione a data"
             minDate={new Date()}
             filterDate={(date: Date) => date.getDay() !== 0 && date.getDay() !== 6}
-            //excludedDates={blockedDates}
+            excludeDates={formData.service === "Martelinho de ouro" ? martelinhoBlocked : []}
+            excludeDateIntervals={formData.service === "Pintura e(ou) Funilaria" ? pinturaIntervals : []}
           />
 
           <DatePicker
