@@ -1,4 +1,4 @@
-from .booking import bookingCreate, BookingCreateResponse, BookingDisponibilityResponse
+from .booking import bookingCreate, BookingCreateResponse, PaintingPerDayResponse
 from .customer import CustomerCreate, CustomerResponse
-from .car_details import Car_detailsCreate, Car_detailsResponse
+from .car_details import Car_detailsCreate, Car_detailsResponse, Car_brandsResponse
 from .customer_booking import Customer_bookingCreate, Customer_bookingCreateResponse, Customer_bookingGetResponse

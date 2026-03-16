@@ -27,11 +27,15 @@ def bookingCreate(booking: schema.bookingCreate, db: Session = Depends(get_db)):
             booking.booking_hr
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    
-@router.get("/byDay/{day}", response_model=list[schema.BookingDisponibilityResponse], status_code=201)
-def get_all_hours_by_date(day: date, db: Session = Depends(get_db)):
-    return service.get_all_hours(db, day)   
+        raise HTTPException(status_code=400, detail=str(e)) 
+
+@router.get("/", response_model=list[schema.BookingResponse], status_code=201)
+def get_all_bookings(db: Session = Depends(get_db)):
+    return service.get_all(db)
+
+@router.get("/invalid_repair_days", status_code=201)
+def get_invalid_dates(db: Session = Depends(get_db)):
+    return service.get_invalid_days(db)
 
 @router.patch(
     "/bookings/{booking_id}",

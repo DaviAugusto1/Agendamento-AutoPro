@@ -6,6 +6,9 @@ from repositories import booking_repository as repository
 from sqlalchemy.exc import IntegrityError
 from schemas.booking import BookingUpdate
 
+def expand_week(week_start):
+    return [week_start + timedelta(days=i) for i in range(5)]
+
 def create(db: Session,
            details_id: int, 
            reason: str,
@@ -44,7 +47,7 @@ def create(db: Session,
     booked_slots = repository.get_all_hours_by_day(db, booking_dt)
     
     new_dt = datetime.combine(booking_dt, booking_hr)
-    for booked_hr, booked_reason in booked_slots:
+    for booked_hr, booked_reason, id in booked_slots:
         existing_dt = datetime.combine(booking_dt, booked_hr)
         existing_dt_plus_pause = existing_dt + timedelta(minutes=(reasons_pause[booked_reason]-1))
         diff = abs((new_dt - existing_dt).total_seconds()) / 60
@@ -92,8 +95,8 @@ def create(db: Session,
         detail="Agendamento duplicado"
     )
 
-def get_all_hours(db: Session, date: date):
-    return repository.get_all_hours_by_day(db, date)
+def get_all(db:Session):
+    return repository.get_all(db)
 
 def update_booking(
     db: Session,
@@ -183,3 +186,22 @@ def delete(db: Session, id: int):
     repository.delete(db, booking)
 
     return {"message": "Agendamento removido com sucesso"}
+
+def get_invalid_days(db: Session):
+
+    martelinho_days = repository.get_blocked_martelinho_days(db)
+    painting_weeks = repository.get_blocked_painting_weeks(db)
+
+    blocked_dates = {
+        "Martelinho": martelinho_days,
+        "Pintura": []
+    }
+    for (monday,) in painting_weeks:
+        friday = monday + timedelta(days=4)
+        blocked_dates["Pintura"].append(monday)
+        blocked_dates["Pintura"].append(friday)
+
+    return {
+        "Martelinho": [d.isoformat() for d in blocked_dates["Martelinho"]],
+        "Pintura": [d.isoformat() for d in blocked_dates["Pintura"]]
+    }

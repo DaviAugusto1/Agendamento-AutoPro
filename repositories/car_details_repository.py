@@ -41,3 +41,11 @@ def get_by_all(db: Session, brand: int, model: str, color: str, year: str | None
         .first()
     )
     return car_details
+
+def get_all_brands(db: Session):
+    car_brands = (
+        db.query(Car_brands)
+        .order_by(Car_brands.brand_name)
+        .all()
+    )
+    return car_brands

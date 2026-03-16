@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, text
 from models import Booking
 from datetime import date, time
 from sqlalchemy.exc import IntegrityError
@@ -67,6 +67,7 @@ def get_all_dates_by_reason(db:Session, reason: str):
     )
     return results
 
+
 def get_all_hours_by_day(db: Session, date: date):
     result = (
         db.query(Booking.booking_hr, Booking.reason, Booking.booking_id)
@@ -83,6 +84,27 @@ def count_repairs_by_week(db:Session, start: date, end: date):
         .scalar()
     )
     return result
+
+def get_blocked_painting_weeks(db: Session):
+    query = text("""
+        SELECT DATE_SUB(booking_dt, INTERVAL WEEKDAY(booking_dt) DAY) AS week_start
+        FROM booking
+        WHERE service = 'Pintura e(ou) Funilaria'
+        GROUP BY week_start
+        HAVING COUNT(booking_id) >= 7""")
+
+    result = db.execute(query).fetchall()
+    return result
+
+def get_blocked_martelinho_days(db: Session):
+    result = (
+        db.query(Booking.booking_dt)
+        .filter(Booking.service == "Martelinho de ouro")
+        .group_by(Booking.booking_dt)
+        .having(func.count(Booking.booking_id) >= 2)
+        .all()
+    )
+    return [r[0] for r in result]
 
 def count_martelinhos_by_day(db:Session, day: date):
     result = (
