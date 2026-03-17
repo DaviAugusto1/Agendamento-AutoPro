@@ -37,6 +37,10 @@ def get_all_bookings(db: Session = Depends(get_db)):
 def get_invalid_dates(db: Session = Depends(get_db)):
     return service.get_invalid_days(db)
 
+@router.get("/blocekd_booking_times/{date}", status_code=201)
+def get_blocked_booking_times(date: date, db: Session = Depends(get_db)):
+    return service.get_invalid_times(db, date)
+
 @router.patch(
     "/bookings/{booking_id}",
     response_model=schema.BookingCreateResponse

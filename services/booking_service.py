@@ -193,15 +193,30 @@ def get_invalid_days(db: Session):
     painting_weeks = repository.get_blocked_painting_weeks(db)
 
     blocked_dates = {
-        "Martelinho": martelinho_days,
+        "Martelinho": [],
         "Pintura": []
     }
-    for (monday,) in painting_weeks:
-        friday = monday + timedelta(days=4)
-        blocked_dates["Pintura"].append(monday)
-        blocked_dates["Pintura"].append(friday)
+    blocked_dates["Martelinho"] = [d.isoformat() for d in martelinho_days]
 
-    return {
-        "Martelinho": [d.isoformat() for d in blocked_dates["Martelinho"]],
-        "Pintura": [d.isoformat() for d in blocked_dates["Pintura"]]
-    }
+    for (monday,) in painting_weeks:
+        friday = monday + timedelta(days=5)
+
+        blocked_dates["Pintura"].append([
+            monday.isoformat(),
+            friday.isoformat()
+        ])
+
+    return blocked_dates
+
+def get_invalid_times(db: Session, date: date):
+    reasons_pause = {"Orçamento": 15, "Reparo": 30}
+    booked_times = repository.get_all_hours_by_day(db, date)
+    blocked_times = []
+    for hour, reason, id in booked_times:
+        hour_plus_pause = datetime.combine(date, hour) + timedelta(minutes=(reasons_pause[reason]-1))
+        blocked_times.append([
+            hour.isoformat(), 
+            hour_plus_pause.time().isoformat()
+        ])
+    
+    return blocked_times
