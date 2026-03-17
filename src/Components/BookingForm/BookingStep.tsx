@@ -43,21 +43,57 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
     Pintura: []
   })
 
+  useEffect(() => {
+  if (!formData.service) return
+
+  async function fetchBlockedDates() {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/bookings/invalid_repair_days?service=${formData.service}`
+      ) 
+
+      const data = await response.json()
+
+      setBlockedDates(data)
+    } catch (error) {
+      console.error("Erro ao buscar datas bloqueadas:", error)
+    }
+  }
+
+  fetchBlockedDates()
+}, [formData.service])
+
   const martelinhoBlocked = useMemo(() => {
     return blockedDates.Martelinho.map(
-      (date) => new Date(date + "T00:00:00")
+      (date: string) => new Date(date + "T00:00:00")
     )
   }, [blockedDates])
 
   const pinturaIntervals = useMemo(() => {
-    return blockedDates.Pintura.map((range) => {
-      const monday = new Date(range[0] + "T00:00:00")
-      const friday = new Date(range[1] + "T00:00:00")
+    return blockedDates.Pintura.map((range: string[]) => {
+      const monday = new Date(range[0])
+      const friday = new Date(range[1])
 
-      return { start: monday, end: friday }
+      return { start: monday, end: friday}
     })
   }, [blockedDates])
   
+  useEffect(() => {
+    setDate(null)
+
+    setFormData({
+      ...formData,
+      booking_dt: ""
+    })
+  }, [formData.service])
+
+  const timeInterval = useMemo(() => {
+    if (formData.reason === "Orçamento") return 15
+    if (formData.reason === "Reparo") return 30
+    if (formData.reason === "Retorno") return 30
+
+    return 30 // fallback padrão
+  }, [formData.reason])
 
   return(
     <div>
@@ -123,7 +159,7 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
             onChange={(selectedDate: Date | null) => setDate(selectedDate)}
             showTimeSelect
             showTimeSelectOnly
-            timeIntervals={30}
+            timeIntervals={timeInterval}
             timeCaption="Horário"
             dateFormat="HH:mm"
           />
