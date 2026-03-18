@@ -41,9 +41,7 @@ export function CarStep({formData, setFormData, onNext, onBack}: Props) {
 
     useEffect(() => {
         getBrands().then(data => {
-
-          console.log("BRANDS DA API:", data)
-
+          
           const formatted = data.map((brand: Brand) => ({
             value: brand.brand_id,
             label: brand.brand_name

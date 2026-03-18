@@ -1,6 +1,7 @@
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { useEffect, useState, useMemo } from "react"
+import { getUnavailableTimes } from "../../services/booking_service"
 
 type Props = {
   formData: any
@@ -36,7 +37,8 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
   console.log(formData)
   } 
 
-  const [date, setDate] = useState<Date | null>(null)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [selectedTime, setSelectedTime] = useState<Date | null>(null)
 
   const [blockedDates, setBlockedDates] = useState({
     Martelinho: [],
@@ -44,7 +46,13 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
   })
 
   useEffect(() => {
-  if (!formData.service) return
+  if (!formData.service || formData.reason !== "Reparo") {
+    setBlockedDates({
+      Martelinho: [],
+      Pintura: []
+    })
+    return
+  }
 
   async function fetchBlockedDates() {
     try {
@@ -77,15 +85,6 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
       return { start: monday, end: friday}
     })
   }, [blockedDates])
-  
-  useEffect(() => {
-    setDate(null)
-
-    setFormData({
-      ...formData,
-      booking_dt: ""
-    })
-  }, [formData.service])
 
   const timeInterval = useMemo(() => {
     if (formData.reason === "Orçamento") return 15
@@ -94,6 +93,86 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
 
     return 30 // fallback padrão
   }, [formData.reason])
+
+  const [blockedTimeRanges, setBlockedTimes] = useState<string[][]>([])
+
+  useEffect(() => {
+    if (!formData.booking_dt) return
+
+    async function fetchTimes() {
+      try {
+        const data = await getUnavailableTimes(formData.booking_dt)
+
+        setBlockedTimes(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchTimes()
+  }, [formData.booking_dt])
+
+  const blockedRangesFormatted = useMemo(() => {
+    if (!selectedDate) return []
+
+    return blockedTimeRanges.map(([start, end]) => {
+      const [sh, sm] = start.split(":").map(Number)
+      const [eh, em] = end.split(":").map(Number)
+
+      const startDate = new Date(selectedDate)
+      startDate.setHours(sh, sm, 0)
+
+      const endDate = new Date(selectedDate)
+      endDate.setHours(eh, em, 0)
+
+      return { start: startDate, end: endDate }
+    })
+  }, [blockedTimeRanges, selectedDate])
+
+  const filterTime = (time: Date) => {
+    const timeMinutes = time.getHours() * 60 + time.getMinutes()
+
+    for (const range of blockedRangesFormatted) {
+      const startMinutes = range.start.getHours() * 60 + range.start.getMinutes()
+
+      const endMinutes = range.end.getHours() * 60 + range.end.getMinutes()
+
+      if (timeMinutes >= startMinutes && timeMinutes <= endMinutes) {
+        return false 
+      }
+    }
+    return true
+  }
+
+  useEffect(() => {
+    setSelectedDate(null)
+
+    setFormData({
+      ...formData,
+      booking_dt: ""
+    })
+  }, [formData.reason])
+
+  const generateAvailableTimes = () => {
+    const times: Date[] = []
+
+    const start = new Date()
+    start.setHours(8, 30, 0)
+
+    const end = new Date()
+    end.setHours(17, 0, 0)
+
+    while (start <= end) {
+      times.push(new Date(start))
+      start.setMinutes(start.getMinutes() + timeInterval)
+    }
+
+    return times
+  }
+
+  const availableTimes = useMemo(() => {
+    return generateAvailableTimes()
+  }, [timeInterval])
 
   return(
     <div>
@@ -137,41 +216,44 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
 
         <div>
           <DatePicker
-            selected={date}
-            onChange={(selectedDate: Date | null) => {
-              setDate(selectedDate)
+            selected={selectedDate}
+            onChange={(date: Date | null) => {
+              setSelectedDate(date)
 
               setFormData({
                 ...formData,
-                booking_dt: selectedDate?.toISOString().split("T")[0] || ""
+                booking_dt: date?.toISOString().split("T")[0] || ""
               })
             }}
             dateFormat="dd/MM/yyyy"
             placeholderText="Selecione a data"
             minDate={new Date()}
             filterDate={(date: Date) => date.getDay() !== 0 && date.getDay() !== 6}
-            excludeDates={formData.service === "Martelinho de ouro" ? martelinhoBlocked : []}
-            excludeDateIntervals={formData.service === "Pintura e(ou) Funilaria" ? pinturaIntervals : []}
+            excludeDates={formData.service === "Martelinho de ouro" && formData.reason === "Reparo" ? martelinhoBlocked : [] }
+            excludeDateIntervals={formData.service === "Pintura e(ou) Funilaria" && formData.reason === "Reparo" ? pinturaIntervals : []}
           />
 
-          <DatePicker
-            selected={date}
-            onChange={(selectedDate: Date | null) => setDate(selectedDate)}
+         <DatePicker
+            selected={selectedTime}
+            onChange={(time: Date | null) => {
+              setSelectedTime(time)
+
+              setFormData({
+                ...formData,
+                booking_hr: time
+                  ? time.toTimeString().slice(0, 5)
+                  : ""
+              })
+            }}
             showTimeSelect
             showTimeSelectOnly
             timeIntervals={timeInterval}
             timeCaption="Horário"
             dateFormat="HH:mm"
+            filterTime={filterTime}
+            includeTimes={availableTimes}
           />
         </div>
-
-        <input
-         placeholder="Horário do agendamento"
-         value={formData.booking_hr}
-         onChange={(e) =>
-           setFormData({ ...formData, booking_hr: e.target.value })
-         }
-        />
 
         <button type="button" onClick={onBack}>
         Voltar

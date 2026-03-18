@@ -34,8 +34,6 @@ export function BookingForm() {
   function back() {
     setStep((prev) => Math.max(prev - 1, 1))
   }
-
-  console.log("Renderizando BookingForm, step:", step)
   
   return (
     <div>
