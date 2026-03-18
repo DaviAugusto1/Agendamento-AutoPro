@@ -215,8 +215,8 @@ def get_invalid_times(db: Session, date: date):
     for hour, reason, id in booked_times:
         hour_plus_pause = datetime.combine(date, hour) + timedelta(minutes=(reasons_pause[reason]-1))
         blocked_times.append([
-            hour.isoformat(), 
-            hour_plus_pause.time().isoformat()
+            hour.strftime("%H:%M"), 
+            hour_plus_pause.time().strftime("%H:%M")
         ])
     
     return blocked_times
