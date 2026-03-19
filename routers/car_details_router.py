@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.connection import SessionLocal
-from schemas import Car_detailsCreate, Car_detailsResponse, Car_brandsResponse
-from services.car_details_service import get_all, get_by_id, create, get_all_brands
+from schemas import Car_detailsCreate, Car_detailsResponse, Car_brandsResponse, Car_detailsPlateResponse 
+from services.car_details_service import get_all, get_by_id, create, get_all_brands, get_details_by_plate
 
 router = APIRouter(prefix="/car_details", tags=["Car_details"])
 
@@ -13,7 +13,7 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/", response_model=list[Car_detailsResponse], status_code=201)
+@router.get("/", response_model=list[Car_detailsResponse])
 def get_all_car_details(db: Session = Depends(get_db)):
     return get_all(db)
     
@@ -21,9 +21,13 @@ def get_all_car_details(db: Session = Depends(get_db)):
 def get_car_details_by_id(id: int, db: Session = Depends(get_db)):
     return get_by_id(db, id)
 
-@router.get("/get_brands", response_model=list[Car_brandsResponse], status_code=201)
+@router.get("/get_brands", response_model=list[Car_brandsResponse])
 def get_brands(db: Session = Depends(get_db)):
     return get_all_brands(db)
+
+@router.get("/get_by_plate/{plate}", response_model=Car_detailsPlateResponse)
+def get_by_plate(plate: str, db: Session = Depends(get_db)):
+    return get_details_by_plate(db, plate)
 
 @router.post("/", response_model=Car_detailsResponse, status_code=201)
 def car_detailsCreate(car_details: Car_detailsCreate, db: Session = Depends(get_db)):
@@ -32,7 +36,7 @@ def car_detailsCreate(car_details: Car_detailsCreate, db: Session = Depends(get_
             db,
             car_details.brand_id,
             car_details.car_model,
-            car_details.car_color,
+            car_details.car_color,  
             car_details.car_year
         )
     except ValueError as e:

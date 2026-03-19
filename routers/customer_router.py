@@ -13,7 +13,7 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/", response_model=list[CustomerResponse], status_code=201)
+@router.get("/", response_model=list[CustomerResponse])
 def get_all_customers(db: Session = Depends(get_db)):
     return get_all(db)
 

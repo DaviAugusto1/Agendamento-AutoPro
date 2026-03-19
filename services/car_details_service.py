@@ -47,3 +47,6 @@ def get_by_id(db:Session, id: int):
 
 def get_all_brands(db:Session):
     return car_details_repository.get_all_brands(db)
+
+def get_details_by_plate(db: Session, plate: str):
+    return car_details_repository.get_details_by_plate(db, plate)
