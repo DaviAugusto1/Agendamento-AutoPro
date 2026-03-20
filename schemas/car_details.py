@@ -25,10 +25,10 @@ class Car_brandsResponse(BaseModel):
     brand_name: str | None
     
 class Car_detailsPlateResponse(BaseModel):
-    car_model: str
+    car_model: str | None
     car_color: str | None
     car_year: int | None
-    brand_id: int
+    brand_id: int | None
     
     class config:
         from_attributes = True 

@@ -27,7 +27,15 @@ def get_brands(db: Session = Depends(get_db)):
 
 @router.get("/get_by_plate/{plate}", response_model=Car_detailsPlateResponse)
 def get_by_plate(plate: str, db: Session = Depends(get_db)):
-    return get_details_by_plate(db, plate)
+    details = get_details_by_plate(db, plate)
+    
+    if details is None:
+        raise HTTPException(
+            status_code=404,
+            detail =f"O Veículo de placa {plate} não foi encontrado."
+        )
+        
+    return details
 
 @router.post("/", response_model=Car_detailsResponse, status_code=201)
 def car_detailsCreate(car_details: Car_detailsCreate, db: Session = Depends(get_db)):

@@ -3,6 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 from models import Car_details
 from repositories import car_details_repository
+import requests
 
 def create(db: Session, brand: int, model: str, color: str  , year: int | None):
     
@@ -49,4 +50,9 @@ def get_all_brands(db:Session):
     return car_details_repository.get_all_brands(db)
 
 def get_details_by_plate(db: Session, plate: str):
-    return car_details_repository.get_details_by_plate(db, plate)
+    
+    vehicle = car_details_repository.get_details_by_plate(db, plate)
+    if vehicle:
+        return vehicle
+    
+    return None

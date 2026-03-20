@@ -1,6 +1,9 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
+from datetime import date, datetime
 from models import Customer_booking, Customer, Booking, Car_details
-from datetime import date
+
+
 
 
 def Create(db: Session, customer_booking: Customer_booking):
@@ -114,3 +117,12 @@ def confirm(db: Session, customer_booking: Customer_booking):
     except Exception:
         db.rollback()
         raise
+    
+def count_bookings(db: Session):
+    booking_count = (
+        db.query(func.count(Customer_booking.booking_id))
+        .outerjoin(Booking.booking_id == Customer_booking.booking_id)
+        .group_by()        
+        .scalar()
+    )
+    return booking_count
