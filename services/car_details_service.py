@@ -3,16 +3,14 @@ from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 from models import Car_details
 from repositories import car_details_repository
-import requests
 
 def create(db: Session, brand: int, model: str, color: str  , year: int | None):
     
-    if year:
-        if len(str(year)) != 4:
-            raise HTTPException(
-                status_code=400,
-                detail="O ano do carro deve ter 4 dígitos!"
-            )
+    if year and len(str(year)) != 4:
+        raise HTTPException(
+               status_code=400,
+            detail="O ano do carro deve ter 4 dígitos!"
+        )
         
     formated_color = color.capitalize()
     

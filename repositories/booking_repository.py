@@ -5,7 +5,7 @@ from datetime import date, time
 from sqlalchemy.exc import IntegrityError
 from schemas.booking import BookingUpdate
 
-def Create(db: Session, booking: Booking):
+def create(db: Session, booking: Booking):
     db.add(booking)
     db.commit()
     db.refresh(booking)
@@ -99,7 +99,7 @@ def get_blocked_painting_weeks(db: Session):
 def get_blocked_martelinho_days(db: Session):
     result = (
         db.query(Booking.booking_dt)
-        .filter(Booking.service == "Martelinho de ouro")
+        .filter(Booking.service == "Martelinho de ouro", Booking.reason == "Reparo")
         .group_by(Booking.booking_dt)
         .having(func.count(Booking.booking_id) >= 2)
         .all()

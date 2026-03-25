@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.connection import SessionLocal
-from schemas import Car_detailsCreate, Car_detailsResponse, Car_brandsResponse, Car_detailsPlateResponse 
+from schemas import CarDetailsCreate, CarDetailsResponse, CarBrandsResponse, CarDetailsPlateResponse, CarDetailsCreateResponse
 from services.car_details_service import get_all, get_by_id, create, get_all_brands, get_details_by_plate
 
 router = APIRouter(prefix="/car_details", tags=["Car_details"])
@@ -13,19 +13,19 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/", response_model=list[Car_detailsResponse])
+@router.get("/", response_model=list[CarDetailsResponse])
 def get_all_car_details(db: Session = Depends(get_db)):
     return get_all(db)
     
-@router.get("/byId/{id}", response_model=Car_detailsResponse)
+@router.get("/byId/{id}", response_model=CarDetailsResponse)
 def get_car_details_by_id(id: int, db: Session = Depends(get_db)):
     return get_by_id(db, id)
 
-@router.get("/get_brands", response_model=list[Car_brandsResponse])
+@router.get("/get_brands", response_model=list[CarBrandsResponse])
 def get_brands(db: Session = Depends(get_db)):
     return get_all_brands(db)
 
-@router.get("/get_by_plate/{plate}", response_model=Car_detailsPlateResponse)
+@router.get("/get_by_plate/{plate}", response_model=CarDetailsPlateResponse)
 def get_by_plate(plate: str, db: Session = Depends(get_db)):
     details = get_details_by_plate(db, plate)
     
@@ -37,8 +37,8 @@ def get_by_plate(plate: str, db: Session = Depends(get_db)):
         
     return details
 
-@router.post("/", response_model=Car_detailsResponse, status_code=201)
-def car_detailsCreate(car_details: Car_detailsCreate, db: Session = Depends(get_db)):
+@router.post("/", response_model=CarDetailsCreateResponse, status_code=201)
+def car_detailsCreate(car_details: CarDetailsCreate, db: Session = Depends(get_db)):
     try:
         return create(
             db,

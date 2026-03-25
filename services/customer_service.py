@@ -6,7 +6,7 @@ from repositories import customer_repository
 
 def create(db: Session, name: str, phone: str):
     
-    if len(phone) != 13:
+    if len(phone) != 11:
         raise HTTPException(
             status_code=400,
             detail="Telefone deve ter 14 digitos!"

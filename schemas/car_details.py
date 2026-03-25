@@ -1,30 +1,39 @@
 from pydantic import BaseModel, Field
 
-class Car_detaisBase(BaseModel):
+class CarDetailsBase(BaseModel):
     brand_id: int
     car_model: str
     car_color: str
     car_year: int
     
-class Car_detailsCreate(BaseModel):
+class CarDetailsCreate(BaseModel):
     brand_id: int
     car_model: str = Field(min_length=1, description="O modelo do carro é obrigatório")
     car_color: str = Field(min_length=1, description="A cor do carro é obrigatória")
     car_year: int
-class Car_detailsResponse(BaseModel):
+class CarDetailsResponse(BaseModel):
     details_id: int
     brand_name: str
     car_model: str
     car_color: str
     car_year: int
-    class config:
-        from_atributes = True
+    class Config:
+        from_attributes = True
 
-class Car_brandsResponse(BaseModel):
+class CarDetailsCreateResponse(BaseModel):
+    details_id: int
+    brand_id: int
+    car_model: str
+    car_color: str
+    car_year: int
+    class Config:
+        from_attributes = True
+
+class CarBrandsResponse(BaseModel):
     brand_id: int
     brand_name: str | None
     
-class Car_detailsPlateResponse(BaseModel):
+class CarDetailsPlateResponse(BaseModel):
     car_model: str | None
     car_color: str | None
     car_year: int | None

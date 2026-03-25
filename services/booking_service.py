@@ -18,7 +18,7 @@ def create(db: Session,
            booking_hr: time):
     reasons = ["Orçamento", "Reparo", "Retorno"]
     reasons_pause = {"Orçamento": 15, "Reparo": 30} 
-    weekday = booking_dt.weekday()  # 0 = segunda, 4 = sexta
+    weekday = booking_dt.weekday()
     monday = booking_dt - timedelta(days=weekday)
     friday = monday + timedelta(days=4)
     formated_car_plate = car_plate.upper()
@@ -69,14 +69,14 @@ def create(db: Session,
         if repairs >= 7:
             raise HTTPException(
             status_code=409,
-            detail=f"Quantidade de limite de agendamentos de reparos já alcançado!")
+            detail="Quantidade de limite de agendamentos de reparos já alcançado!")
     
     if service == "Martelinho de ouro" and reason == "Reparo":
         martelinhos = repository.count_martelinhos_by_day(db, booking_dt)
         if martelinhos >= 2:
             raise HTTPException(
             status_code=409,
-            detail=f"Quantidade de limite diário de serviços de martelinhos já alcançado!")
+            detail="Quantidade de limite diário de serviços de martelinhos já alcançado!")
         
     booking = Booking(
         details_id=details_id,
@@ -88,7 +88,7 @@ def create(db: Session,
     )
 
     try:
-        return repository.Create(db, booking)
+        return repository.create(db, booking)
     except IntegrityError:
         raise HTTPException(
         status_code=409,
@@ -104,7 +104,7 @@ def update_booking(
     data: BookingUpdate
 ):
     reasons_pause = {"Orçamento": 15, "Reparo": 30} 
-    weekday = data.booking_dt.weekday()  # 0 = segunda, 4 = sexta
+    weekday = data.booking_dt.weekday()
     monday = data.booking_dt - timedelta(days=weekday)
     friday = monday + timedelta(days=4)
     try:

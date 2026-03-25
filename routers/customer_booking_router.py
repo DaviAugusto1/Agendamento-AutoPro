@@ -24,9 +24,9 @@ def confirm_booking(
 def bookingCreate(booking: schema.Customer_bookingCreate, db: Session = Depends(get_db)):
     try:
         return service.create(
-            db,
-            booking.booking_id,
-            booking.customer_id
+            db=db,
+            customer_id=booking.customer_id,
+            booking_id=booking.booking_id
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
