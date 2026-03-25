@@ -1,5 +1,6 @@
 import Select from "react-select"
 import { useEffect, useState } from "react"
+import { Modal } from '../Modal';
 import { getBrands } from "../../services/brand_service"
 import { customStyles } from "./style"
 import { getDetailsByPlate } from "../../services/car_details_service"
@@ -21,16 +22,18 @@ type Brand = {
   brand_name: string
 }
 
-export function CarStep({formData, setFormData, onNext, onBack}: Props) {
+export function CarStep({formData, setFormData, onNext, onBack}: Readonly<Props>) {
+
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' as 'info' | 'error' | 'success' | 'warning' });
 
   function handleNext() {
     if (!formData.car_model) {
-      alert("Digite o modelo do veículo!")
+      setModal({ isOpen: true, title: 'Atenção', message: 'Digite o modelo do veículo!', type: 'error' });
       return
     }
 
     if (!formData.car_plate) {
-      alert("Digite a placa do carro!")
+      setModal({ isOpen: true, title: 'Atenção', message: 'Digite a placa do carro!', type: 'error' });
       return
     }
 
@@ -160,5 +163,7 @@ export function CarStep({formData, setFormData, onNext, onBack}: Props) {
         <button type="button" onClick={onBack}>
           Voltar
         </button>
+
+        <Modal isOpen={modal.isOpen} onClose={() => setModal({ ...modal, isOpen: false })} title={modal.title} message={modal.message} type={modal.type} />
     </div>
   )}

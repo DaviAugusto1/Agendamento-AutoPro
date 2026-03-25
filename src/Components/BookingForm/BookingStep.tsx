@@ -2,6 +2,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { useEffect, useState, useMemo } from "react"
 import { getUnavailableTimes } from "../../services/booking_service"
+import { Modal } from '../Modal';
 
 type Props = {
   formData: any
@@ -12,25 +13,27 @@ type Props = {
 
 export function BookingStep({formData, setFormData, onBack}: Props) {
 
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' as 'info' | 'error' | 'success' | 'warning' });
+
   function handleSubmit(){
 
     if (!formData.service) {
-      alert("Selecione o Serviço!")
+      setModal({ isOpen: true, title: 'Atenção', message: 'Selecione o Serviço!', type: 'error' });
       return
     }
 
     if (!formData.reason) {
-      alert("Selecione o motivo do agendamento!")
+      setModal({ isOpen: true, title: 'Atenção', message: 'Selecione o motivo do agendamento!', type: 'error' });
       return
     }
 
     if (!formData.booking_dt) {
-      alert("Selecione a data do agendamento!")
+      setModal({ isOpen: true, title: 'Atenção', message: 'Selecione a data do agendamento!', type: 'error' });
       return
     }
 
-    if (!formData.booking_dt) {
-      alert("Selecione o horário do agendamento!")
+    if (!formData.booking_hr) {
+      setModal({ isOpen: true, title: 'Atenção', message: 'Selecione o horário do agendamento!', type: 'error' });
       return
     }
 
@@ -264,6 +267,6 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
           Finalizar Agendamento
         </button>
         
-
+        <Modal isOpen={modal.isOpen} onClose={() => setModal({ ...modal, isOpen: false })} title={modal.title} message={modal.message} type={modal.type} />
     </div>
   )}

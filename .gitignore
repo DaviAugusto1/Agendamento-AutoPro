@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#errors
+errors_utf8.txt
+errors.txt
+eslint_errors.json

@@ -1,5 +1,5 @@
 import type { Booking } from '../../types/booking';
-import { cardStyle, headerStyle, statusStyle, buttonStyle } from './style.ts'
+import { cardStyle, headerStyle } from './style.ts'
 
 interface BookingCardProps {
   booking: Booking;

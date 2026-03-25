@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react"
+import { Modal } from '../Modal';
 
 type Props = {
   formData: any
@@ -11,14 +12,16 @@ type Props = {
 
 export function CustomerStep({ formData, setFormData, onNext }: Props) {
 
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' as 'info' | 'error' | 'success' | 'warning' });
+
   function handleNext() {
     if (!formData.customer_name) {
-      alert("Digite o nome do cliente!")
+      setModal({ isOpen: true, title: 'Atenção', message: 'Digite o nome do cliente!', type: 'error' });
       return
     }
 
     if (!formData.phone_number) {
-      alert("Digite o telefone!")
+      setModal({ isOpen: true, title: 'Atenção', message: 'Digite o telefone!', type: 'error' });
       return
     }
 
@@ -82,6 +85,7 @@ export function CustomerStep({ formData, setFormData, onNext }: Props) {
         Próximo
       </button>
 
+      <Modal isOpen={modal.isOpen} onClose={() => setModal({ ...modal, isOpen: false })} title={modal.title} message={modal.message} type={modal.type} />
     </div>
   )
 }
