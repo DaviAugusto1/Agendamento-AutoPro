@@ -6,6 +6,10 @@ import { Modal } from '../Components/Modal';
 import { StepProgress } from '../Components/StepProgress';
 import Select from 'react-select';
 import { customSelectStyles } from '../Components/SelectStyles';
+import { formatPhoneMain } from '../hooks/usePhoneFormater';
+
+
+
 
 export function ClientStep() {
   const navigate = useNavigate();
@@ -13,20 +17,14 @@ export function ClientStep() {
   const [modal, setModal] = useState<{isOpen: boolean, title: string, message: string, type: 'info'|'error'|'success'|'warning'}>({ isOpen: false, title: '', message: '', type: 'info' });
 
   const [phoneDDD, setPhoneDDD] = useState("");
-  const [phoneMain, setPhoneMain] = useState("");
+  const [phoneMain, setPhoneMain] = useState("9");
 
   useEffect(() => {
-    if (formData.phone_number?.length >= 2 && !phoneDDD) {
-      setPhoneDDD(formData.phone_number.slice(0, 2));
-      setPhoneMain(formatPhoneMain(formData.phone_number.slice(2)));
+    if (formData.phone_number?.length >= 3 && !phoneDDD) {
+      setPhoneDDD(formData.phone_number.slice(1, 3));
+      setPhoneMain(formatPhoneMain(formData.phone_number.slice(3)));
     }
   }, [formData.phone_number, phoneDDD]);
-
-  function formatPhoneMain(value: string) {
-    const numbers = value.replace(/\D/g, "");
-    if (numbers.length <= 5) return numbers;
-    return `${numbers.slice(0, 5)}-${numbers.slice(5, 9)}`;
-  }
 
   const isStepValid = useMemo(() => {
     return (
@@ -47,7 +45,7 @@ export function ClientStep() {
     }
     navigate('/car');
   }
-  const ddds = [11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 63, 64, 65, 66, 67, 68, 69, 71, 73, 74, 75, 77, 79, 81, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99];
+  const ddds = [61, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 69, 71, 73, 74, 75, 77, 79, 81, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99];
   const dddOptions = ddds.map(d => ({ value: String(d), label: String(d) }));
 
   return (
@@ -95,7 +93,7 @@ export function ClientStep() {
                         onChange={(selected: any) => {
                           const newDDD = selected?.value || "";
                           setPhoneDDD(newDDD);
-                          const rawMain = phoneMain.replace(/\D/g, "");
+                          const rawMain = phoneMain.replaceAll(/\D/g, "");
                           setFormData({ ...formData, phone_number: `${newDDD}${rawMain}` });
                         }}
                         isSearchable
@@ -105,9 +103,12 @@ export function ClientStep() {
                     <input type="tel" placeholder="90000-0000" required
                       value={phoneMain}
                       onChange={(e) => {
-                        const raw = e.target.value.replace(/\D/g, "").slice(0, 9);
-                        setPhoneMain(formatPhoneMain(raw));
-                        setFormData({ ...formData, phone_number: `${phoneDDD}${raw}` });
+                        const raw = e.target.value.replaceAll(/\D/g, "");
+                        const withoutPrefix9 = raw.startsWith("9") ? raw.slice(1) : raw;
+                        const normalized = "9" + withoutPrefix9;
+                        const limited = normalized.slice(0, 9);
+                        setPhoneMain(formatPhoneMain(limited));
+                        setFormData({ ...formData, phone_number: `${phoneDDD}${limited}` });
                       }}
                       className="flex-1 bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-4 py-4 font-headline text-xl text-primary focus:border-primary transition-all placeholder:text-on-surface-variant/20 rounded-t-md" />
                   </div>

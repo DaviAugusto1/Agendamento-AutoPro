@@ -11,7 +11,7 @@ type Props = {
 }
 
 
-export function BookingStep({formData, setFormData, onBack}: Props) {
+export function BookingStep({formData, setFormData, onBack}: Readonly<Props>) {
 
   const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' as 'info' | 'error' | 'success' | 'warning' });
 
@@ -97,7 +97,7 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
     return 30 // fallback padrão
   }, [formData.reason])
 
-  const [blockedTimeRanges, setBlockedTimes] = useState<string[][]>([])
+  const [blockedTimeRanges, setBlockedTimeRanges] = useState<string[][]>([])
 
   useEffect(() => {
     if (!formData.booking_dt) return
@@ -106,7 +106,7 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
       try {
         const data = await getUnavailableTimes(formData.booking_dt)
 
-        setBlockedTimes(data)
+        setBlockedTimeRanges(data)
       } catch (error) {
         console.error(error)
       }
@@ -243,9 +243,9 @@ export function BookingStep({formData, setFormData, onBack}: Props) {
 
               setFormData({
                 ...formData,
-                booking_hr: time
-                  ? time.toTimeString().slice(0, 5)
-                  : ""
+                booking_hr: time 
+                ? `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}` 
+                : ""
               })
             }}
             showTimeSelect

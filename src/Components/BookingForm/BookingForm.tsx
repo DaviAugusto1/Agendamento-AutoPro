@@ -9,7 +9,7 @@ export function BookingForm() {
   const [formData, setFormData] = useState<BookingFormData>({
     //ClientStep
     customer_name: "",
-    phone_number: "",
+    phone_number: "9",
 
     //CarStep
     brand_id: null,

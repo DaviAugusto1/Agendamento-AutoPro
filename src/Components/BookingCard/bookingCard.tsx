@@ -6,7 +6,7 @@ interface BookingCardProps {
   onConfirm?: (id: number) => void;
 }
 
-export function BookingCard({ booking }: BookingCardProps) {
+export function BookingCard({ booking }: Readonly<BookingCardProps>) {
   return (
     <div style={cardStyle}>
       <div style={headerStyle}>

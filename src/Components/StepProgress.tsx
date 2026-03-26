@@ -41,22 +41,19 @@ export function StepProgress({ currentStep }: Readonly<StepProgressProps>) {
       
       <div className="flex justify-between mt-4">
         <div 
-          className={`flex items-center gap-2 cursor-pointer transition-colors ${currentStep === 1 ? 'text-primary' : 'text-on-surface-variant/40 hover:text-primary'}`} 
-          onClick={() => navigate('/')}
+          className={`flex items-center gap-2 cursor-pointer transition-colors ${currentStep === 1 ? 'text-primary' : 'text-on-surface-variant/40 hover:text-primary'}`}
         >
           <span className="font-label text-[10px] font-bold">01</span>
           <span className={`font-label text-[10px] uppercase tracking-${currentStep === 1 ? '[0.1em] font-black' : 'tighter'}`}>CLIENTE</span>
         </div>
         <div 
           className={`flex items-center gap-2 cursor-pointer transition-colors ${currentStep === 2 ? 'text-primary' : 'text-on-surface-variant/40 hover:text-primary'}`} 
-          onClick={() => navigate('/car')}
         >
           <span className="font-label text-[10px] font-bold">02</span>
           <span className={`font-label text-[10px] uppercase tracking-${currentStep === 2 ? '[0.1em] font-black' : 'tighter'}`}>CARRO</span>
         </div>
         <div 
           className={`flex items-center gap-2 cursor-pointer transition-colors ${currentStep === 3 ? 'text-primary' : 'text-on-surface-variant/40 hover:text-primary'}`} 
-          onClick={() => navigate('/booking')}
         >
           <span className="font-label text-[10px] font-bold">03</span>
           <span className={`font-label text-[10px] uppercase tracking-${currentStep === 3 ? '[0.1em] font-black' : 'tighter'}`}>SERVIÇO</span>

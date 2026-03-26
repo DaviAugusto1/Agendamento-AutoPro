@@ -1,13 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../Components/Layout';
 import { useBookingContext } from '../context/BookingContext';
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { ptBR } from "date-fns/locale/pt-BR";
 import { useEffect, useState, useMemo } from "react";
 import { getUnavailableTimes } from "../services/booking_service";
 import { api } from "../api/api";
 import { Modal } from '../Components/Modal';
 import { StepProgress } from '../Components/StepProgress';
+
+registerLocale("pt-BR", ptBR);
 
 export function BookingStep() {
   const navigate = useNavigate();
@@ -254,6 +257,7 @@ export function BookingStep() {
                         });
                       }}
                       dateFormat="dd/MM/yyyy"
+                      locale="pt-BR"
                       minDate={new Date()}
                       maxDate={maxTwoMonthsDate}
                       filterDate={(date: Date) => {
@@ -279,14 +283,16 @@ export function BookingStep() {
                         setSelectedTime(time);
                         setFormData({
                           ...formData,
-                          booking_hr: time ? time.toTimeString().slice(0, 5) : ""
+                          booking_hr: time ? `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}` : ""
                         });
                       }}
                       showTimeSelect
                       showTimeSelectOnly
                       timeIntervals={timeInterval}
                       timeCaption="Horário"
+                      timeFormat="HH:mm"
                       dateFormat="HH:mm"
+                      locale="pt-BR"
                       includeTimes={availableTimes}
                       filterTime={filterTime}
                       disabled={!formData.booking_dt}

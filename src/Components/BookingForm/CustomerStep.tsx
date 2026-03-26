@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo} from "react"
 import { Modal } from '../Modal';
 
 type Props = {
@@ -8,9 +8,23 @@ type Props = {
 }
 
 
+function formatPhone(value: string) {
+    const numbers = value.replaceAll(/\D/g, "")
+    
+    const normalized = numbers.startsWith("9") ? numbers : "9" + numbers
+    
+    if (normalized.length <= 2) {
+      return normalized
+    }
+    
+    if (normalized.length <= 10) {
+      return `(${normalized.slice(0, 2)}) ${normalized.slice(2)}`
+    }
+    
+    return `(${normalized.slice(0, 2)}) ${normalized.slice(2, 3)}-${normalized.slice(3, 7)}-${normalized.slice(7, 11)}`
+}
 
-
-export function CustomerStep({ formData, setFormData, onNext }: Props) {
+export function CustomerStep({ formData, setFormData, onNext }: Readonly<Props>) {
 
   const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' as 'info' | 'error' | 'success' | 'warning' });
 
@@ -28,35 +42,24 @@ export function CustomerStep({ formData, setFormData, onNext }: Props) {
       onNext()
   }
 
-  function formatPhone(value: string){
-    const numbers = value.replace(/\D/g, "")
+  
 
-    if (numbers.length <= 2) {
-      return numbers
-    }
-
-    if(numbers.length <= 7){
-      return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`
-    }
-
-    return `(${numbers.slice(0,2)}) ${numbers.slice(2, 7)}-${numbers.slice(7,11)}`
-
-  }
-
-  const [phoneDisplay, setPhoneDisplay] = useState("")
+  const [phoneDisplay, setPhoneDisplay] = useState("9")
 
   const isStepValid = useMemo(() => {
     return (
       formData.customer_name?.trim() !== "" &&
-      formData.phone_number?.length === 11
+      formData.phone_number?.length === 10
     )
   }, [formData.customer_name, formData.phone_number])
 
-  useEffect(() => {
-  if (formData.phone_number) {
-    setPhoneDisplay(formatPhone(formData.phone_number))
-  }
-  }, [formData.phone_number])
+  // useEffect(() => {
+  //   if (formData.phone_number && formData.phone_number !== "9") {
+  //     setPhoneDisplay(formatPhone(formData.phone_number))
+  //   } else if (formData.phone_number === "9") {
+  //     setPhoneDisplay("9")
+  //   }
+  // }, [formData.phone_number])
 
   return (
     <div>
@@ -73,11 +76,14 @@ export function CustomerStep({ formData, setFormData, onNext }: Props) {
         placeholder="Telefone"
         value={phoneDisplay}
         onChange={(e) => {
-          const raw = e.target.value.replace(/\D/g, "").slice(0, 11)
-
-          setPhoneDisplay(formatPhone(raw))
-
-          setFormData({...formData, phone_number: raw})
+          const raw = e.target.value.replaceAll(/\D/g, "")
+          
+          const withoutPrefix9 = raw.startsWith("9") ? raw.slice(1) : raw
+          const normalized = "9" + withoutPrefix9
+          const limited = normalized.slice(0, 10)
+          
+          setPhoneDisplay(formatPhone(limited))
+          setFormData({...formData, phone_number: limited})
         }}
       />
 
