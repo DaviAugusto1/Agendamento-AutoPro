@@ -4,17 +4,20 @@ from fastapi import HTTPException
 from models import Car_details
 from repositories import car_details_repository
 
-def create(db: Session, brand: int, model: str, color: str  , year: int | None):
+def create(db: Session, brand: int, model: str, color: str, year: int | None):
     
     if year and len(str(year)) != 4:
         raise HTTPException(
-               status_code=400,
+            status_code=400,
             detail="O ano do carro deve ter 4 dígitos!"
         )
         
     formated_color = color.capitalize()
     
-    existing_details = car_details_repository.get_by_all(db, brand, model, color, year)
+    existing_details = car_details_repository.get_by_all(db, brand, model, formated_color, year)
+    
+    if existing_details:
+        return existing_details
     
     new_car_details = Car_details(
         brand_id=brand,
@@ -22,12 +25,7 @@ def create(db: Session, brand: int, model: str, color: str  , year: int | None):
         car_color = formated_color,
         car_year = year
     )
-    
-    try:
-        return car_details_repository.Create(db, new_car_details)
-    except IntegrityError:
-        db.rollback()
-        return existing_details
+    return car_details_repository.Create(db, new_car_details)
     
 def get_all(db: Session):
     return car_details_repository.get_all(db)
