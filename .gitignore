@@ -23,7 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
 #errors
-errors_utf8.txt
-errors.txt
-eslint_errors.json
+*.error*
