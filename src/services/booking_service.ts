@@ -13,7 +13,7 @@ export async function getBlockedDays() {
 
 export async function getUnavailableTimes(date: string) {
   const response = await fetch(
-    `http://localhost:8000/bookings/blocked_booking_times/${date}`
+    `${import.meta.env.VITE_API_BASE_URL}/bookings/blocked_booking_times/${date}`
   )
 
   const data = await response.json()

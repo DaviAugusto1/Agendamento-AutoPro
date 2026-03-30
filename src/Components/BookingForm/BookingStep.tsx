@@ -60,7 +60,7 @@ export function BookingStep({formData, setFormData, onBack}: Readonly<Props>) {
   async function fetchBlockedDates() {
     try {
       const response = await fetch(
-        `http://localhost:8000/bookings/invalid_repair_days?service=${formData.service}`
+        `${import.meta.env.VITE_API_BASE_URL}/bookings/invalid_repair_days?service=${formData.service}`
       ) 
 
       const data = await response.json()

@@ -4,11 +4,22 @@ import { useBookingContext } from '../context/BookingContext';
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ptBR } from "date-fns/locale/pt-BR";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { getUnavailableTimes } from "../services/booking_service";
 import { api } from "../api/api";
 import { Modal } from '../Components/Modal';
 import { StepProgress } from '../Components/StepProgress';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const REASON_TOOLTIPS: Record<string, string> = {
+  Orçamento:
+    "Agende uma visita para receber uma avaliação detalhada dos serviços necessários e um orçamento sem compromisso.",
+  Reparo:
+    "Traga seu veículo para realizarmos o serviço já aprovado. Certifique-se de ter o orçamento confirmado antes de agendar.",
+  Retorno:
+    "Agende um retorno para verificarmos o serviço realizado e garantirmos que tudo está dentro dos padrões de qualidade.",
+};
 
 registerLocale("pt-BR", ptBR);
 
@@ -16,6 +27,8 @@ export function BookingStep() {
   const navigate = useNavigate();
   const { formData, setFormData } = useBookingContext();
   const [modal, setModal] = useState<{isOpen: boolean, title: string, message: string, type: 'info'|'error'|'success'|'warning', onCloseAction?: () => void}>({ isOpen: false, title: '', message: '', type: 'info' });
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
@@ -29,7 +42,7 @@ export function BookingStep() {
     }
     async function fetchBlockedDates() {
       try {
-        const response = await fetch(`http://localhost:8000/bookings/invalid_repair_days?service=${formData.service}`);
+        const response = await fetch(`${API_BASE_URL}/bookings/invalid_repair_days?service=${formData.service}`);
         const data = await response.json();
         setBlockedDates(data);
       } catch (error) {
@@ -56,14 +69,14 @@ export function BookingStep() {
     return 30;
   }, [formData.reason]);
 
-  const [blockedTimeRanges, setBlockedTimes] = useState<string[][]>([]);
+  const [blockedTimeRanges, setBlockedTimeRanges] = useState<string[][]>([]);
 
   useEffect(() => {
     if (!formData.booking_dt) return;
     async function fetchTimes() {
       try {
         const data = await getUnavailableTimes(formData.booking_dt);
-        setBlockedTimes(data);
+        setBlockedTimeRanges(data);
       } catch (error) {
         console.error(error);
       }
@@ -223,7 +236,42 @@ export function BookingStep() {
               </div>
 
               <div className="flex flex-col gap-3">
-                <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Motivo do Agendamento</label>
+                <div className="flex items-center gap-2">
+                  <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Motivo do Agendamento</label>
+                  <div className="relative" ref={tooltipRef}>
+                    <button
+                      type="button"
+                      aria-label="Informações sobre motivo do agendamento"
+                      onClick={() => setTooltipOpen(prev => !prev)}
+                      onBlur={() => setTimeout(() => setTooltipOpen(false), 150)}
+                      className="flex items-center justify-center w-4 h-4 rounded-full bg-surface-container-highest border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:border-primary/50 transition-colors cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '12px', lineHeight: 1 }}>question_mark</span>
+                    </button>
+                    {tooltipOpen && (
+                      <div
+                        role="tooltip"
+                        className="absolute left-6 top-1/2 -translate-y-1/2 z-50 w-64 p-3 rounded-xl bg-surface-container-highest border border-outline-variant/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] text-on-surface"
+                      >
+                        {formData.reason ? (
+                          <>
+                            <p className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-1">{formData.reason}</p>
+                            <p className="font-body text-xs text-on-surface-variant leading-relaxed">{REASON_TOOLTIPS[formData.reason]}</p>
+                          </>
+                        ) : (
+                          <div className="space-y-3">
+                            {Object.entries(REASON_TOOLTIPS).map(([reason, desc]) => (
+                              <div key={reason}>
+                                <p className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-0.5">{reason}</p>
+                                <p className="font-body text-xs text-on-surface-variant leading-relaxed">{desc}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {reasons.map(rsn => (
                     <button 
