@@ -1,1 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+env/
 .env
+
+# Databases
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+>>>>>>> 821f690a5b29bf9f7904627bfdb6fa0c742d7d37
