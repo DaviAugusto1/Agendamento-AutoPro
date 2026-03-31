@@ -1,6 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+
+DOCS_URL = os.getenv("DOCS_URL")
+ORIGINS_TXT = os.getenv("ORIGINS_TXT")
 #Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="API de Agendamento - AutoPro")
@@ -9,12 +15,12 @@ app = FastAPI(title="API de Agendamento - AutoPro")
 def root():
     return {
         "status": "API de Agendamento - AutoPro rodando",
-        "docs": "http://127.0.0.1:8000/docs"
+        "docs": DOCS_URL
     }
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[ORIGINS_TXT],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
