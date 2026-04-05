@@ -7,7 +7,6 @@ load_dotenv()
 
 DOCS_URL = os.getenv("DOCS_URL")
 ORIGINS_TXT = os.getenv("ORIGINS_TXT")
-
 #Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="API de Agendamento - AutoPro")
