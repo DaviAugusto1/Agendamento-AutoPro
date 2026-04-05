@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(53, 53, 53, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .service-gauge-bg {
+            background: linear-gradient(90deg, #353535 0%, #f2ca50 100%);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#e5e2e1",
+              "inverse-primary": "#735c00",
+              "on-error-container": "#ffdad6",
+              "on-primary-fixed": "#241a00",
+              "on-error": "#690005",
+              "surface": "#131313",
+              "primary": "#f2ca50",
+              "surface-container-highest": "#353535",
+              "surface-bright": "#393939",
+              "on-tertiary": "#2f3131",
+              "on-secondary-fixed-variant": "#474747",
+              "on-primary-fixed-variant": "#574500",
+              "surface-container-lowest": "#0e0e0e",
+              "error-container": "#93000a",
+              "surface-dim": "#131313",
+              "surface-container-high": "#2a2a2a",
+              "tertiary-fixed": "#e2e2e2",
+              "secondary": "#c8c6c6",
+              "on-tertiary-container": "#444546",
+              "on-surface-variant": "#d0c5af",
+              "on-primary-container": "#554300",
+              "on-background": "#e5e2e1",
+              "surface-container": "#20201f",
+              "surface-container-low": "#1c1b1b",
+              "on-secondary-fixed": "#1b1c1c",
+              "on-secondary-container": "#b6b5b4",
+              "primary-fixed-dim": "#e9c349",
+              "background": "#131313",
+              "inverse-surface": "#e5e2e1",
+              "inverse-on-surface": "#313030",
+              "on-secondary": "#303030",
+              "surface-tint": "#e9c349",
+              "outline-variant": "#4d4635",
+              "primary-fixed": "#ffe088",
+              "on-tertiary-fixed": "#1a1c1c",
+              "error": "#ffb4ab",
+              "on-primary": "#3c2f00",
+              "surface-variant": "#353535",
+              "secondary-fixed-dim": "#c8c6c6",
+              "secondary-fixed": "#e4e2e1",
+              "on-tertiary-fixed-variant": "#454747",
+              "tertiary-container": "#b2b3b3",
+              "tertiary-fixed-dim": "#c6c6c7",
+              "secondary-container": "#474747",
+              "primary-container": "#d4af37",
+              "outline": "#99907c",
+              "tertiary": "#cecece"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20 w-full bg-gradient-to-b from-[#131313] to-transparent">
+<div class="text-xl font-bold tracking-[0.2em] text-[#d4af37] font-headline uppercase">
+            KINETIC ATELIER
+        </div>
+<nav class="hidden md:flex gap-10 items-center">
+<a class="font-headline tracking-wider uppercase text-sm text-[#d4af37] border-b-2 border-[#d4af37] pb-1 hover:text-[#f2ca50] transition-colors duration-300" href="#">Schedule</a>
+<a class="font-headline tracking-wider uppercase text-sm text-[#d0c5af] opacity-80 hover:text-[#f2ca50] transition-colors duration-300" href="#">Vault</a>
+<a class="font-headline tracking-wider uppercase text-sm text-[#d0c5af] opacity-80 hover:text-[#f2ca50] transition-colors duration-300" href="#">Workshop</a>
+</nav>
+<div class="flex items-center gap-6 text-[#d4af37]">
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:scale-110 transition-transform">account_circle</span>
+</div>
+</header>
+<main class="min-h-screen pt-32 pb-24 px-6 md:px-12 lg:px-24 flex flex-col items-center justify-center">
+<!-- Background Hero Element (Subtle) -->
+<div class="absolute inset-0 z-[-1] overflow-hidden">
+<div class="absolute top-1/4 -right-20 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-0 -left-20 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]"></div>
+</div>
+<div class="w-full max-w-4xl grid md:grid-cols-12 gap-12 items-start">
+<!-- Left Column: Context & Progress -->
+<div class="md:col-span-5 space-y-12">
+<div>
+<h1 class="font-headline text-5xl font-bold text-primary tracking-tight leading-none mb-4 uppercase italic">
+                        Precision <br/>Performance
+                    </h1>
+<p class="text-on-surface-variant text-lg max-w-xs leading-relaxed">
+                        Curating excellence for your automotive masterpiece. Begin your journey here.
+                    </p>
+</div>
+<!-- Progress Indicator -->
+<div class="space-y-6">
+<div class="flex items-center gap-4 group">
+<div class="w-12 h-12 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline font-bold text-xl shadow-[0_0_20px_rgba(242,202,80,0.3)]">
+                            01
+                        </div>
+<div class="flex flex-col">
+<span class="font-headline text-xs tracking-[0.2em] text-primary uppercase font-bold">Step One</span>
+<span class="text-on-surface font-semibold text-lg">Cliente</span>
+</div>
+</div>
+<div class="w-px h-8 bg-outline-variant/30 ml-6"></div>
+<div class="flex items-center gap-4 opacity-40 grayscale group hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+<div class="w-12 h-12 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface font-headline font-bold text-xl">
+                            02
+                        </div>
+<div class="flex flex-col">
+<span class="font-headline text-xs tracking-[0.2em] text-on-surface-variant uppercase">Step Two</span>
+<span class="text-on-surface-variant font-semibold text-lg">Carro</span>
+</div>
+</div>
+<div class="w-px h-8 bg-outline-variant/30 ml-6"></div>
+<div class="flex items-center gap-4 opacity-40 grayscale group hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+<div class="w-12 h-12 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface font-headline font-bold text-xl">
+                            03
+                        </div>
+<div class="flex flex-col">
+<span class="font-headline text-xs tracking-[0.2em] text-on-surface-variant uppercase">Step Three</span>
+<span class="text-on-surface-variant font-semibold text-lg">Agendamento</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: The Form Card -->
+<div class="md:col-span-7">
+<div class="bg-surface-container-low p-8 md:p-12 rounded-xl shadow-[24px_24px_48px_rgba(0,0,0,0.4)] border border-outline-variant/10 relative overflow-hidden group">
+<!-- Top accent line -->
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-container"></div>
+<div class="mb-10">
+<h2 class="font-headline text-2xl font-semibold text-on-surface tracking-tight mb-2">Identification</h2>
+<p class="text-on-surface-variant text-sm font-label tracking-wide uppercase">Private Client Registry</p>
+</div>
+<form class="space-y-8">
+<div class="space-y-2 group">
+<label class="font-headline text-xs tracking-[0.1em] text-primary uppercase font-bold" for="name">
+                                Nome
+                            </label>
+<input class="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/30 py-4 px-0 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-0 focus:border-primary transition-all duration-300 font-body text-lg" id="name" placeholder="Enter full name" type="text"/>
+</div>
+<div class="space-y-2 group">
+<label class="font-headline text-xs tracking-[0.1em] text-primary uppercase font-bold" for="phone">
+                                Telefone
+                            </label>
+<input class="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/30 py-4 px-0 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-0 focus:border-primary transition-all duration-300 font-body text-lg" id="phone" placeholder="(00) 90000-0000" type="tel"/>
+</div>
+<!-- Service Gauge Mimic -->
+<div class="pt-4">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60">Profile Completion</span>
+<span class="font-headline text-sm text-primary">33%</span>
+</div>
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full w-1/3 service-gauge-bg"></div>
+</div>
+</div>
+<div class="pt-8 flex justify-end">
+<button class="group flex items-center gap-3 bg-primary hover:bg-primary-fixed-dim text-on-primary px-10 py-4 rounded-md font-headline font-bold uppercase tracking-widest transition-all duration-300 shadow-[0_4px_20px_rgba(242,202,80,0.2)] active:scale-95">
+                                Próximo
+                                <span class="material-symbols-outlined text-xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Decorative Background Image (Subtle) -->
+<div class="absolute -bottom-12 -right-12 opacity-5 pointer-events-none">
+<img alt="Luxury car silhouette" class="w-64 grayscale" data-alt="dramatic low angle shot of a modern luxury sports car silhouette in dark lighting with soft golden rim light highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_RY8ja5iZqNDxdDgHEt3xMUBzmhbWPaApU4m92Ih01bf5Ic0bKYrFEfvMNctAMlTMNMhVNCeRKg0VXICEYSbF4zwVpYHNvnML2Ikt_Hb26dtKy4E4WrwtXtgoum2VqyM8RrM67SSHJKSJ-LAfGP-gAnZx_Gx3WQqVYv72C-eCvCCP7K-KLfadXfSJlMPtUKLmBYwF41DdpFYUCNxUisDpNMtrbbVGU53G2uUVLFIFsWahx7ZSZfO0y0VdH_5Id9NHISWPGkhc9RV_"/>
+</div>
+</div>
+<p class="mt-8 text-center text-on-surface-variant/50 font-label text-[10px] tracking-[0.3em] uppercase">
+                    Secured by Kinetic Atelier Encryption
+                </p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-[#131313]/90 backdrop-blur-xl border-t border-[#d4af37]/20 flex justify-around items-center h-20 pb-safe px-6 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-[#d4af37] scale-110">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Atelier</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#d0c5af] opacity-50">
+<span class="material-symbols-outlined">directions_car</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Garage</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#d0c5af] opacity-50">
+<span class="material-symbols-outlined">event_available</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Schedule</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#d0c5af] opacity-50">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Profile</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,15 @@
+400 – Bad Request (você já vai fazer 👌)
+
+Quando:
+
+dados inválidos
+
+regra de negócio quebrada
+
+data no passado (quando não pode)
+
+horário já ocupado (exemplo prático)
+
+404 - Not Found
+
+Retorna Nulo (Exemplo no service do paciente por ID)

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#735c00",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#241a00",
+                        "on-error": "#690005",
+                        "surface": "#131313",
+                        "primary": "#f2ca50",
+                        "surface-container-highest": "#353535",
+                        "surface-bright": "#393939",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-fixed-variant": "#474747",
+                        "on-primary-fixed-variant": "#574500",
+                        "surface-container-lowest": "#0e0e0e",
+                        "error-container": "#93000a",
+                        "surface-dim": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary": "#c8c6c6",
+                        "on-tertiary-container": "#444546",
+                        "on-surface-variant": "#d0c5af",
+                        "on-primary-container": "#554300",
+                        "on-background": "#e5e2e1",
+                        "surface-container": "#20201f",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "on-secondary-container": "#b6b5b4",
+                        "primary-fixed-dim": "#e9c349",
+                        "background": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary": "#303030",
+                        "surface-tint": "#e9c349",
+                        "outline-variant": "#4d4635",
+                        "primary-fixed": "#ffe088",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "error": "#ffb4ab",
+                        "on-primary": "#3c2f00",
+                        "surface-variant": "#353535",
+                        "secondary-fixed-dim": "#c8c6c6",
+                        "secondary-fixed": "#e4e2e1",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "tertiary-container": "#b2b3b3",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "secondary-container": "#474747",
+                        "primary-container": "#d4af37",
+                        "outline": "#99907c",
+                        "tertiary": "#cecece"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-surface overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#131313] flex justify-between items-center px-8 h-20 w-full bg-gradient-to-b from-[#131313] to-transparent">
+<div class="text-xl font-bold tracking-[0.2em] text-[#d4af37] font-['Space_Grotesk'] uppercase">
+            KINETIC ATELIER
+        </div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-['Space_Grotesk'] tracking-wider uppercase text-sm text-[#d0c5af] opacity-80 hover:text-[#f2ca50] transition-colors duration-300" href="#">Gallery</a>
+<a class="font-['Space_Grotesk'] tracking-wider uppercase text-sm text-[#d0c5af] opacity-80 hover:text-[#f2ca50] transition-colors duration-300" href="#">Workshop</a>
+<a class="font-['Space_Grotesk'] tracking-wider uppercase text-sm text-[#d4af37] border-b-2 border-[#d4af37] pb-1 hover:text-[#f2ca50] transition-colors duration-300" href="#">Schedule</a>
+<a class="font-['Space_Grotesk'] tracking-wider uppercase text-sm text-[#d0c5af] opacity-80 hover:text-[#f2ca50] transition-colors duration-300" href="#">Vault</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#d4af37] cursor-pointer scale-95 active:opacity-70 transition-all" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-[#d4af37] cursor-pointer scale-95 active:opacity-70 transition-all" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="min-h-screen pt-32 pb-24 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
+<!-- Header & Progress -->
+<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
+<div class="space-y-2">
+<span class="font-label text-primary uppercase tracking-[0.3em] text-xs font-bold">Step 03 — Finalização</span>
+<h1 class="font-headline text-5xl md:text-6xl font-bold text-on-surface tracking-tight italic">AGENDAMENTO</h1>
+<p class="font-body text-on-surface-variant max-w-md">Confirme os detalhes técnicos e a disponibilidade para a manutenção de alta performance do seu veículo.</p>
+</div>
+<!-- Progress Indicator -->
+<div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-lg">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-md bg-outline-variant flex items-center justify-center text-xs font-bold text-on-surface-variant">01</div>
+<div class="w-8 h-1 bg-outline-variant"></div>
+<div class="w-8 h-8 rounded-md bg-outline-variant flex items-center justify-center text-xs font-bold text-on-surface-variant">02</div>
+<div class="w-8 h-1 bg-outline-variant"></div>
+<div class="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-sm font-black text-on-primary shadow-[0_0_15px_rgba(242,202,80,0.3)]">03</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Technical Form Section -->
+<form class="lg:col-span-7 space-y-8 bg-surface-container-low p-8 rounded-xl relative overflow-hidden">
+<!-- Service Gauge Decoration -->
+<div class="absolute top-0 left-0 w-full h-1 bg-surface-variant">
+<div class="h-full bg-gradient-to-r from-primary-container to-primary w-2/3"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Date Input -->
+<div class="flex flex-col gap-2">
+<label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Data</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none border-b-2 border-transparent focus:ring-0 focus:border-primary text-on-surface py-4 px-4 font-body transition-all" type="date" value="2023-11-24"/>
+<span class="material-symbols-outlined absolute right-4 top-4 text-primary opacity-50 pointer-events-none" data-icon="calendar_today">calendar_today</span>
+</div>
+</div>
+<!-- Time Input -->
+<div class="flex flex-col gap-2">
+<label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Horário</label>
+<div class="relative group">
+<select class="w-full bg-surface-container-highest border-none border-b-2 border-transparent focus:ring-0 focus:border-primary text-on-surface py-4 px-4 font-body transition-all appearance-none">
+<option>09:00 AM</option>
+<option selected="">10:30 AM</option>
+<option>02:00 PM</option>
+<option>04:30 PM</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-4 text-primary opacity-50 pointer-events-none" data-icon="schedule">schedule</span>
+</div>
+</div>
+<!-- Service Type -->
+<div class="md:col-span-2 flex flex-col gap-2">
+<label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Serviço</label>
+<div class="relative group">
+<select class="w-full bg-surface-container-highest border-none border-b-2 border-transparent focus:ring-0 focus:border-primary text-on-surface py-4 px-4 font-body transition-all appearance-none">
+<option>Revisão de Motor — Nível I</option>
+<option selected="">Otimização de Performance ECU</option>
+<option>Alinhamento Laser de Precisão</option>
+<option>Detalhamento Estético Ceramic Pro</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-4 text-primary opacity-50 pointer-events-none" data-icon="settings_wrench">reset_wrench</span>
+</div>
+</div>
+<!-- Reason -->
+<div class="md:col-span-2 flex flex-col gap-2">
+<label class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Motivo do Agendamento</label>
+<textarea class="w-full bg-surface-container-highest border-none border-b-2 border-transparent focus:ring-0 focus:border-primary text-on-surface py-4 px-4 font-body transition-all resize-none" placeholder="Descreva os sintomas ou necessidades específicas..." rows="4"></textarea>
+</div>
+</div>
+<!-- Navigation Buttons -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
+<button class="w-full sm:w-auto px-10 py-4 font-headline uppercase tracking-widest text-xs font-bold text-primary border border-outline-variant hover:bg-surface-container-highest transition-all flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
+                        Voltar
+                    </button>
+<button class="w-full sm:w-auto px-10 py-4 font-headline uppercase tracking-[0.2em] text-sm font-black bg-primary text-on-primary hover:bg-primary-fixed-dim transition-all shadow-[0_8px_24px_rgba(242,202,80,0.2)] flex items-center justify-center gap-2" type="submit">
+                        Finalizar Agendamento
+                        <span class="material-symbols-outlined" data-icon="done_all">done_all</span>
+</button>
+</div>
+</form>
+<!-- Summary / Visual Section -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Visual Card -->
+<div class="aspect-video w-full rounded-xl overflow-hidden relative group bg-surface-container-high border border-outline-variant/10">
+<img alt="Luxury vehicle profile" class="w-full h-full object-cover mix-blend-overlay opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Close-up profile of a black luxury supercar in a dimly lit studio with golden rim lighting highlighting the aerodynamic curves." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbCWOJrrcHHPMlE8xcwqW9gbA5kp_eu8NwkkBl4XYdO0YKqjfjX0fg2TS3-mH05KWfqmrcXAQiKIr18NY_h_l-iQCbR6GFVfn0KtVwAB0DMDtVuTyXUqH1xFTfHJbN5Qu3Vw0nHLG8AAlgS3GEpI9H3_QTHXkxMNQ8bMEVTctOzjgOjioK4Spnkd6VXVF0uXmkGPLiCLdDm1ZIIIZ8LHUuWPhVBnpD0zWQXBA5115s65oV-x_O-Z8p7LqMGH8aeSO0tQy0-nJrZwQm"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6">
+<h3 class="font-headline text-xl font-bold text-primary tracking-tight">KINETIC PREVIEW</h3>
+<p class="font-body text-xs text-on-surface-variant">Confirmação de Slot Reservado</p>
+</div>
+</div>
+<!-- Summary Details -->
+<div class="bg-surface-container-high p-8 rounded-xl border border-outline-variant/5 space-y-6">
+<h4 class="font-headline text-sm font-bold tracking-widest uppercase text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="fact_check">fact_check</span>
+                        Resumo do Pedido
+                    </h4>
+<ul class="space-y-4">
+<li class="flex justify-between items-center border-b border-outline-variant/10 pb-4">
+<span class="font-label text-[10px] uppercase text-on-surface-variant">Técnico Atribuído</span>
+<span class="font-body text-sm text-on-surface font-medium">Equipe Alpha — High Performance</span>
+</li>
+<li class="flex justify-between items-center border-b border-outline-variant/10 pb-4">
+<span class="font-label text-[10px] uppercase text-on-surface-variant">Estimativa de Tempo</span>
+<span class="font-body text-sm text-on-surface font-medium">3-4 Horas Operacionais</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="font-label text-[10px] uppercase text-on-surface-variant">Prioridade</span>
+<span class="px-2 py-1 bg-primary/10 text-primary font-label text-[10px] font-bold uppercase rounded">Exclusive Gold</span>
+</li>
+</ul>
+<div class="p-4 bg-surface-container-lowest border border-primary/20 rounded">
+<p class="font-body text-xs text-on-surface-variant leading-relaxed italic">
+                            "Todos os serviços no Atelier seguem os padrões FIA de segurança e performance mecânica."
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-[#131313]/90 backdrop-blur-xl border-t border-[#d4af37]/20 flex justify-around items-center h-20 pb-safe px-6 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-[#d0c5af] opacity-50 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Atelier</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#d0c5af] opacity-50 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Garage</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#d4af37] scale-110">
+<span class="material-symbols-outlined" data-icon="event_available" data-weight="fill" style="font-variation-settings: 'FILL' 1;">event_available</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Schedule</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#d0c5af] opacity-50 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.05em] uppercase">Profile</span>
+</div>
+</nav>
+</body></html>

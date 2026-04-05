@@ -1,0 +1,7 @@
+﻿src/Components/BookingCard/bookingCard.tsx(2,34): error TS6133: 'statusStyle' is declared but its value is never read.
+src/Components/BookingCard/bookingCard.tsx(2,47): error TS6133: 'buttonStyle' is declared but its value is never read.
+src/pages/bookings/bookingspage.tsx(3,1): error TS6133: 'BookingCard' is declared but its value is never read.
+src/pages/bookings/bookingspage.tsx(8,10): error TS6133: 'bookings' is declared but its value is never read.
+src/pages/BookingStep.tsx(1,10): error TS2305: Module '"react"' has no exported member 'useNavigate'.
+src/pages/CarStep.tsx(1,10): error TS2305: Module '"react"' has no exported member 'useNavigate'.
+src/pages/ClientStep.tsx(1,10): error TS2305: Module '"react"' has no exported member 'useNavigate'.

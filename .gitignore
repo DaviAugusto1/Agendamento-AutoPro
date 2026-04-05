@@ -1,25 +1,31 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-*.pyc
-
-# Virtual environments
-venv/
-.venv/
-env/
-.env
-
-# Databases
-*.db
-*.sqlite3
-
-# Logs
-*.log
+# OS
+.DS_Store
+Thumbs.db
 
 # IDE
 .vscode/
 .idea/
->>>>>>> 821f690a5b29bf9f7904627bfdb6fa0c742d7d37
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+*.local
+
+# Frontend
+node_modules/
+dist/
+dist-ssr/
