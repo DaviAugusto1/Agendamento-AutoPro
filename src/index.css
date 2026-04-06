@@ -255,3 +255,105 @@
 .react-datepicker__time-list-item--disabled {
   display: none !important;
 }
+
+/* ═══════════════════════════════════════════════════
+   FullCalendar — Manager Dashboard Dark Theme
+   ═══════════════════════════════════════════════════ */
+
+.calendar-wrapper .fc {
+  --fc-border-color: rgba(77, 70, 53, 0.2);
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: rgba(28, 27, 27, 0.6);
+  --fc-today-bg-color: rgba(242, 202, 80, 0.06);
+  font-family: 'Manrope', sans-serif;
+}
+
+.calendar-wrapper .fc .fc-toolbar-title {
+  color: #f2ca50;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.calendar-wrapper .fc .fc-button {
+  background-color: #1c1b1b;
+  border: 1px solid #353535;
+  color: #d0c5af;
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.calendar-wrapper .fc .fc-button:hover {
+  background-color: rgba(77, 70, 53, 0.4);
+  border-color: rgba(242, 202, 80, 0.3);
+  color: #f2ca50;
+}
+
+.calendar-wrapper .fc .fc-button:disabled {
+  opacity: 0.4;
+}
+
+.calendar-wrapper .fc .fc-button-active,
+.calendar-wrapper .fc .fc-button:active {
+  background-color: #f2ca50 !important;
+  color: #1c1b1b !important;
+  border-color: #f2ca50 !important;
+}
+
+.calendar-wrapper .fc .fc-col-header-cell {
+  background-color: rgba(32, 32, 31, 0.6);
+  padding: 10px 0;
+}
+
+.calendar-wrapper .fc .fc-col-header-cell-cushion {
+  color: #d0c5af;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+
+.calendar-wrapper .fc .fc-daygrid-day-number {
+  color: #e5e2e1;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 6px 8px;
+}
+
+.calendar-wrapper .fc .fc-day-today .fc-daygrid-day-number {
+  color: #f2ca50;
+  font-weight: 700;
+}
+
+.calendar-wrapper .fc .fc-daygrid-day:hover {
+  background-color: rgba(77, 70, 53, 0.15);
+  cursor: pointer;
+}
+
+.calendar-wrapper .fc .fc-daygrid-event {
+  border-radius: 6px;
+  padding: 1px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  margin: 1px 2px;
+}
+
+.calendar-wrapper .fc .fc-daygrid-day-frame {
+  min-height: 90px;
+}
+
+.calendar-wrapper .fc .fc-scrollgrid {
+  border: none;
+}
+
+.calendar-wrapper .fc .fc-more-link {
+  color: #f2ca50;
+  font-size: 11px;
+  font-weight: 600;
+}

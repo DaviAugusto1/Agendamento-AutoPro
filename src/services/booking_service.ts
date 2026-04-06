@@ -1,8 +1,21 @@
 import { api } from "../api/api"
+import type { Booking } from "../types/booking"
 
-export async function getBookings() {
+export async function getBookings(): Promise<Booking[]> {
   const response = await api.get('/bookings')
 
+  return response.data
+}
+
+export async function getBookingsByMonth(year: number, month: number): Promise<Booking[]> {
+  const response = await api.get('/bookings/by-month', {
+    params: { year, month },
+  })
+  return response.data
+}
+
+export async function getBookingsByDate(date: string): Promise<Booking[]> {
+  const response = await api.get(`/bookings/by-date/${date}`)
   return response.data
 }
 
