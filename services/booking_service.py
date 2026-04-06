@@ -98,6 +98,17 @@ def create(db: Session,
 def get_all(db:Session):
     return repository.get_all(db)
 
+def get_bookings_by_month(db: Session, year: int, month: int):
+    first_day = date(year, month, 1)
+    if month == 12:
+        last_day = date(year + 1, 1, 1) - timedelta(days=1)
+    else:
+        last_day = date(year, month + 1, 1) - timedelta(days=1)
+    return repository.get_bookings_by_date_range(db, first_day, last_day)
+
+def get_bookings_by_date(db: Session, target_date: date):
+    return repository.get_bookings_by_date(db, target_date)
+
 def update_booking(
     db: Session,
     booking_id: int,

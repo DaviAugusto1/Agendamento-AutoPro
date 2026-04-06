@@ -24,6 +24,22 @@ def get_all(db: Session):
         .all())
     return bookings
 
+def get_bookings_by_date_range(db: Session, start_date: date, end_date: date):
+    return (
+        db.query(Booking)
+        .filter(Booking.booking_dt.between(start_date, end_date))
+        .order_by(Booking.booking_dt, Booking.booking_hr)
+        .all()
+    )
+
+def get_bookings_by_date(db: Session, target_date: date):
+    return (
+        db.query(Booking)
+        .filter(Booking.booking_dt == target_date)
+        .order_by(Booking.booking_hr)
+        .all()
+    )
+
 def get_booking_by_id(db: Session, id: int):
     booking = (
         db.query(Booking)

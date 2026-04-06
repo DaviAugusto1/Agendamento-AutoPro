@@ -33,6 +33,14 @@ def bookingCreate(booking: schema.bookingCreate, db: Session = Depends(get_db)):
 def get_all_bookings(db: Session = Depends(get_db)):
     return service.get_all(db)
 
+@router.get("/by-month", response_model=list[schema.BookingResponse])
+def get_bookings_by_month(year: int, month: int, db: Session = Depends(get_db)):
+    return service.get_bookings_by_month(db, year, month)
+
+@router.get("/by-date/{target_date}", response_model=list[schema.BookingResponse])
+def get_bookings_by_date(target_date: date, db: Session = Depends(get_db)):
+    return service.get_bookings_by_date(db, target_date)
+
 @router.get("/invalid_repair_days")
 def get_invalid_dates(db: Session = Depends(get_db)):
     return service.get_invalid_days(db)
