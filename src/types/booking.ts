@@ -10,6 +10,14 @@ export interface Booking {
   booking_hr: string;
 }
 
+export interface BookingDetailed extends Booking {
+  brand_name: string | null;
+  car_model: string | null;
+  car_color: string | null;
+  car_year: number | null;
+  confirmation: string;
+}
+
 export type BookingFormData = {
   //ClientStep
   customer_name: string;
