@@ -3,6 +3,7 @@ import { BookingProvider } from './context/BookingContext';
 import { ClientStep } from './pages/ClientStep';
 import { CarStep } from './pages/CarStep';
 import { BookingStep } from './pages/BookingStep';
+import { BookingConfirmation } from './pages/BookingConfirmation';
 import { ManagerLogin } from './pages/management/ManagerLogin';
 import { ManagerRoute } from './Components/ManagerRoute';
 import { CalendarPage } from './pages/management/CalendarPage';
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<ClientStep />} />
           <Route path="/car" element={<CarStep />} />
           <Route path="/booking" element={<BookingStep />} />
+          <Route path="/confirm/:bookingId" element={<BookingConfirmation />} />
 
           {/* Manager authentication */}
           <Route path="/admin" element={<ManagerLogin />} />

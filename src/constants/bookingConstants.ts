@@ -14,9 +14,5 @@ export const REASON_COLORS: Record<ReasonKey, string> = {
 
 export const SERVICES = [
   'Pintura e(ou) Funilaria',
-  'Polimento Cristalizado',
-  'Martelinho de ouro',
-  'Limpeza Cera Técnica',
-  'Higienização',
-  'Outro',
+  'Martelinho de ouro'
 ] as const;
