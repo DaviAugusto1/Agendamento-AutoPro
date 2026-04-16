@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from contextlib import asynccontextmanager
+import asyncio
+from jobs.whatsapp_cron import notification_worker
 
 load_dotenv()
 
@@ -9,7 +12,15 @@ DOCS_URL = os.getenv("DOCS_URL")
 ORIGINS_TXT = os.getenv("ORIGINS_TXT")
 #Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="API de Agendamento - AutoPro")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Run the automation job in the background
+    task = asyncio.create_task(notification_worker())
+    yield
+    # Shutdown
+    task.cancel()
+
+app = FastAPI(title="API de Agendamento - AutoPro", lifespan=lifespan)
 
 @app.get("/")
 def root():
