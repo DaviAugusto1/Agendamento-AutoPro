@@ -357,3 +357,106 @@
   font-size: 11px;
   font-weight: 600;
 }
+
+/* ═══════════════════════════════════════════════════
+   Mobile Overrides — DatePicker & FullCalendar
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 639px) {
+  /* ─── DatePicker compact on mobile ──────── */
+  .react-datepicker {
+    border-radius: 12px !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .react-datepicker__header {
+    padding: 10px 8px 6px !important;
+  }
+
+  .react-datepicker__current-month {
+    font-size: 12px !important;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 4px !important;
+  }
+
+  .react-datepicker__day-name {
+    width: 30px !important;
+    line-height: 30px !important;
+    font-size: 9px !important;
+  }
+
+  .react-datepicker__day {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    margin: 1px 0 !important;
+  }
+
+  .react-datepicker__month {
+    margin: 4px !important;
+  }
+
+  .react-datepicker__navigation {
+    top: 10px !important;
+  }
+
+  .react-datepicker__navigation--previous {
+    left: 8px !important;
+  }
+
+  .react-datepicker__navigation--next {
+    right: 8px !important;
+  }
+
+  /* ─── Time Picker compact on mobile ──────── */
+  .react-datepicker__time-list {
+    height: 180px !important;
+  }
+
+  .react-datepicker__time-list-item {
+    font-size: 13px !important;
+    padding: 6px 12px !important;
+  }
+
+  .react-datepicker-time__header {
+    font-size: 11px !important;
+    padding: 8px !important;
+  }
+
+  /* ─── FullCalendar compact on mobile ──────── */
+  .calendar-wrapper .fc .fc-toolbar-title {
+    font-size: 13px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .calendar-wrapper .fc .fc-button {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .calendar-wrapper .fc .fc-col-header-cell-cushion {
+    font-size: 9px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .calendar-wrapper .fc .fc-daygrid-day-number {
+    font-size: 11px !important;
+    padding: 4px 6px !important;
+  }
+
+  .calendar-wrapper .fc .fc-daygrid-event {
+    font-size: 9px !important;
+    padding: 0 2px !important;
+  }
+
+  .calendar-wrapper .fc .fc-daygrid-day-frame {
+    min-height: 60px !important;
+  }
+
+  .calendar-wrapper .fc .fc-more-link {
+    font-size: 9px !important;
+  }
+}

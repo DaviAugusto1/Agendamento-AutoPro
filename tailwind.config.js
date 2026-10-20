@@ -61,6 +61,9 @@ export default {
         "body": ["Manrope", "sans-serif"],
         "label": ["Inter", "sans-serif"]
       },
+      screens: {
+        'xs': '400px',
+      },
       borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
     },
   },

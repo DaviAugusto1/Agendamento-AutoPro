@@ -71,9 +71,14 @@ export function ManagerEditBookingModal({
         <div className="bg-[#1c1b1b] border-b border-[#d4af37]/15 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[#f2ca50]">edit_calendar</span>
-            <h2 className="text-[#f2ca50] font-['Space_Grotesk'] font-bold text-lg uppercase tracking-wide">
-              Editar Agendamento
-            </h2>
+            <div>
+              <h2 className="text-[#f2ca50] font-['Space_Grotesk'] font-bold text-lg uppercase tracking-wide">
+                Editar Agendamento
+              </h2>
+              {booking.customer_name && (
+                <p className="text-xs text-[#d0c5af]">Cliente: <span className="text-[#e5e2e1] font-semibold">{booking.customer_name}</span></p>
+              )}
+            </div>
           </div>
           <button 
             onClick={onClose}
@@ -140,7 +145,7 @@ export function ManagerEditBookingModal({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
              <div>
                <label className="block text-xs font-bold text-[#d0c5af] uppercase tracking-[0.1em] mb-2">
                 Data

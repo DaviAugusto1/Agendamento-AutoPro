@@ -25,7 +25,7 @@ function groupBookingsByDay(bookings: BookingDetailed[]): DayBookingCount[] {
     const dateKey = booking.booking_dt;
 
     if (!grouped.has(dateKey)) {
-      grouped.set(dateKey, { Orçamento: 0, Reparo: 0, Retorno: 0 });
+      grouped.set(dateKey, { Orçamento: 0, Reparo: 0, 'Retorno de Garantia': 0, 'Vistoria Seguradora': 0 });
     }
 
     const counts = grouped.get(dateKey)!;
@@ -166,7 +166,7 @@ export function CalendarPage() {
         
         {/* Filters Panel */}
         <div className="glass-effect rounded-2xl p-5 border border-[#d4af37]/10 mb-6 flex flex-wrap gap-4 items-end">
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-[140px] sm:min-w-[200px]">
             <label className="block text-xs font-bold text-[#d0c5af] uppercase tracking-[0.1em] mb-2">
               Motivo
             </label>
@@ -182,7 +182,7 @@ export function CalendarPage() {
             </select>
           </div>
           
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-[140px] sm:min-w-[200px]">
             <label className="block text-xs font-bold text-[#d0c5af] uppercase tracking-[0.1em] mb-2">
               Serviço
             </label>
@@ -198,7 +198,7 @@ export function CalendarPage() {
             </select>
           </div>
 
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-[140px] sm:min-w-[200px]">
             <label className="block text-xs font-bold text-[#d0c5af] uppercase tracking-[0.1em] mb-2">
               Ir para Data
             </label>

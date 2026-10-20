@@ -20,13 +20,13 @@ export function StepProgress({ currentStep }: Readonly<StepProgressProps>) {
   };
 
   return (
-    <div className="w-full max-w-3xl mb-16 mx-auto">
+    <div className="w-full max-w-3xl mb-8 md:mb-16 mx-auto">
       <div className="flex justify-between items-end mb-4">
         <div className="flex flex-col">
           <span className="font-label text-xs uppercase tracking-[0.2em] text-primary mb-1">
             Passo 0{currentStep}
           </span>
-          <h1 className="font-headline text-3xl md:text-4xl font-bold text-on-surface uppercase">
+          <h1 className="font-headline text-2xl md:text-4xl font-bold text-on-surface uppercase">
             {getStepTitle()}
           </h1>
         </div>
@@ -44,19 +44,19 @@ export function StepProgress({ currentStep }: Readonly<StepProgressProps>) {
           className={`flex items-center gap-2 cursor-pointer transition-colors ${currentStep === 1 ? 'text-primary' : 'text-on-surface-variant/40 hover:text-primary'}`}
         >
           <span className="font-label text-[10px] font-bold">01</span>
-          <span className={`font-label text-[10px] uppercase tracking-${currentStep === 1 ? '[0.1em] font-black' : 'tighter'}`}>CLIENTE</span>
+          <span className={`font-label text-[9px] sm:text-[10px] uppercase hidden xs:inline tracking-${currentStep === 1 ? '[0.1em] font-black' : 'tighter'}`}>CLIENTE</span>
         </div>
         <div 
           className={`flex items-center gap-2 cursor-pointer transition-colors ${currentStep === 2 ? 'text-primary' : 'text-on-surface-variant/40 hover:text-primary'}`} 
         >
           <span className="font-label text-[10px] font-bold">02</span>
-          <span className={`font-label text-[10px] uppercase tracking-${currentStep === 2 ? '[0.1em] font-black' : 'tighter'}`}>CARRO</span>
+          <span className={`font-label text-[9px] sm:text-[10px] uppercase hidden xs:inline tracking-${currentStep === 2 ? '[0.1em] font-black' : 'tighter'}`}>CARRO</span>
         </div>
         <div 
           className={`flex items-center gap-2 cursor-pointer transition-colors ${currentStep === 3 ? 'text-primary' : 'text-on-surface-variant/40 hover:text-primary'}`} 
         >
           <span className="font-label text-[10px] font-bold">03</span>
-          <span className={`font-label text-[10px] uppercase tracking-${currentStep === 3 ? '[0.1em] font-black' : 'tighter'}`}>SERVIÇO</span>
+          <span className={`font-label text-[9px] sm:text-[10px] uppercase hidden xs:inline tracking-${currentStep === 3 ? '[0.1em] font-black' : 'tighter'}`}>SERVIÇO</span>
         </div>
       </div>
     </div>

@@ -92,7 +92,7 @@ export function BookingStep({formData, setFormData, onBack}: Readonly<Props>) {
   const timeInterval = useMemo(() => {
     if (formData.reason === "Orçamento") return 15
     if (formData.reason === "Reparo") return 30
-    if (formData.reason === "Retorno") return 30
+    if (formData.reason === "Retorno de Garantia") return 30
 
     return 30 // fallback padrão
   }, [formData.reason])
@@ -197,9 +197,9 @@ export function BookingStep({formData, setFormData, onBack}: Readonly<Props>) {
 
         <button
             type="button"
-            onClick={() => setFormData({ ...formData, reason: "Retorno" })}
+            onClick={() => setFormData({ ...formData, reason: "Retorno de Garantia" })}
         >
-            Retorno
+            Retorno de Garantia
         </button>
 
         <strong>Selecione o serviço desejado</strong>

@@ -9,14 +9,15 @@ const ALL_FILTER = 'Todos';
 const EMPTY_STATE_MESSAGE = 'Nenhum agendamento encontrado';
 const LOADING_MESSAGE = 'Carregando agendamentos...';
 
-const FILTER_OPTIONS = [ALL_FILTER, 'Orçamento', 'Reparo', 'Retorno'] as const;
+const FILTER_OPTIONS = [ALL_FILTER, 'Orçamento', 'Reparo', 'Retorno de Garantia', 'Vistoria Seguradora'] as const;
 type FilterOption = typeof FILTER_OPTIONS[number];
 
 
 const REASON_BADGE_STYLES: Record<string, { bg: string; text: string }> = {
   Orçamento: { bg: 'bg-blue-200', text: 'text-blue-800' },
   Reparo: { bg: 'bg-green-200', text: 'text-green-800' },
-  Retorno: { bg: 'bg-yellow-200', text: 'text-yellow-800' },
+  'Retorno de Garantia': { bg: 'bg-yellow-200', text: 'text-yellow-800' },
+  'Vistoria Seguradora': { bg: 'bg-purple-200', text: 'text-purple-800' },
 };
 
 const DEFAULT_BADGE_STYLE = { bg: 'bg-gray-200', text: 'text-gray-800' };
@@ -43,17 +44,27 @@ function BookingCard({ booking, onConfirm, onRemove, onEdit }: Readonly<BookingC
 
   return (
     <div className="glass-effect rounded-xl p-5 border border-[#d4af37]/10 hover:border-[#d4af37]/25 transition-all flex flex-col gap-4">
+      {/* Customer Name at Top-Center */}
+      <div className="flex items-center justify-center pb-2.5 border-b border-[#353535]/50">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-[#f2ca50] text-xl">person</span>
+          <h3 className="font-headline font-bold text-lg sm:text-xl text-[#e5e2e1] tracking-wide text-center">
+            {booking.customer_name || 'Cliente não identificado'}
+          </h3>
+        </div>
+      </div>
+
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2 text-sm">
-          <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${badgeStyle.bg} ${badgeStyle.text}`}>
+          <span className={`px-3 py-1 rounded-md text-xs sm:text-sm font-bold uppercase tracking-wider ${badgeStyle.bg} ${badgeStyle.text} shadow-sm`}>
             {booking.reason}
           </span>
           {isConfirmed ? (
-            <span className="px-2 py-1 rounded text-xs font-bold bg-green-900/30 text-green-400 border border-green-500/30 flex items-center gap-1">
+            <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-green-900/30 text-green-400 border border-green-500/30 flex items-center gap-1">
               <span className="material-symbols-outlined text-[14px]">check_circle</span>Confirmado
             </span>
           ) : (
-            <span className="px-2 py-1 rounded text-xs font-bold bg-yellow-900/30 text-yellow-500 border border-yellow-500/30 flex items-center gap-1">
+            <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-yellow-900/30 text-yellow-500 border border-yellow-500/30 flex items-center gap-1">
               <span className="material-symbols-outlined text-[14px]">pending</span>Pendente
             </span>
           )}
@@ -89,9 +100,11 @@ function BookingCard({ booking, onConfirm, onRemove, onEdit }: Readonly<BookingC
         {/* Action Info & buttons */}
         <div className="space-y-2 sm:text-right flex flex-col justify-between sm:items-end">
           {booking.service && (
-            <div className="flex items-center sm:justify-end gap-2 text-[#d0c5af]">
-              <span className="material-symbols-outlined text-base opacity-60 sm:order-last">build</span>
-              <span>{booking.service}</span>
+            <div className="flex items-center sm:justify-end gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f2ca50]/15 border border-[#f2ca50]/40 text-[#f2ca50] font-headline font-bold text-sm sm:text-base tracking-wide shadow-[0_0_12px_rgba(242,202,80,0.15)]">
+                <span className="material-symbols-outlined text-lg text-[#f2ca50]">build</span>
+                {booking.service}
+              </span>
             </div>
           )}
           
@@ -110,8 +123,14 @@ function BookingCard({ booking, onConfirm, onRemove, onEdit }: Readonly<BookingC
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-2 text-[#d0c5af]/50 text-xs pt-2 border-t border-[#353535]/50">
+      <div className="flex items-center justify-between gap-2 text-[#d0c5af]/50 text-xs pt-2 border-t border-[#353535]/50">
           <span>Agendamento ID: {booking.booking_id}</span>
+          {booking.customer_phone && (
+            <span className="flex items-center gap-1 text-[#d0c5af]/70">
+              <span className="material-symbols-outlined text-[13px]">call</span>
+              {booking.customer_phone}
+            </span>
+          )}
       </div>
     </div>
   );

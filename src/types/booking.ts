@@ -16,6 +16,8 @@ export interface BookingDetailed extends Booking {
   car_color: string | null;
   car_year: number | null;
   confirmation: string;
+  customer_name?: string | null;
+  customer_phone?: string | null;
 }
 
 export type BookingFormData = {

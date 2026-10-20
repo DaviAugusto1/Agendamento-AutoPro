@@ -50,7 +50,7 @@ export function ClientStep() {
 
   return (
     <Layout>
-      <main className="min-h-screen pt-32 pb-24 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto flex flex-col items-center">
+      <main className="min-h-screen pt-20 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 lg:px-12 xl:px-24 max-w-7xl mx-auto flex flex-col items-center">
         <StepProgress currentStep={1} />
 
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -83,8 +83,8 @@ export function ClientStep() {
                   <label className="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant/70">
                     Telefone
                   </label>
-                  <div className="flex gap-4 items-end">
-                    <div className="w-32 bg-surface-container-highest rounded-t-md hover:bg-surface-container-highest/80 transition-colors pt-2 px-2 border-b-2 border-outline-variant/20 focus-within:border-primary">
+                  <div className="grid grid-cols-1 sm:grid-cols-[7rem_1fr] gap-4 items-end">
+                    <div className="w-full bg-surface-container-highest rounded-t-md hover:bg-surface-container-highest/80 transition-colors pt-2 px-2 border-b-2 border-outline-variant/20 focus-within:border-primary">
                       <Select
                         options={dddOptions}
                         styles={customSelectStyles}
@@ -110,7 +110,7 @@ export function ClientStep() {
                         setPhoneMain(formatPhoneMain(limited));
                         setFormData({ ...formData, phone_number: `${phoneDDD}${limited}` });
                       }}
-                      className="flex-1 bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-4 py-4 font-headline text-xl text-primary focus:border-primary transition-all placeholder:text-on-surface-variant/20 rounded-t-md" />
+                      className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-4 py-4 font-headline text-xl text-primary focus:border-primary transition-all placeholder:text-on-surface-variant/20 rounded-t-md" />
                   </div>
                 </div>
 

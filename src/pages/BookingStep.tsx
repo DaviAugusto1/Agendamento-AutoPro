@@ -17,8 +17,10 @@ const REASON_TOOLTIPS: Record<string, string> = {
     "Agende uma visita para receber uma avaliação detalhada dos serviços necessários e um orçamento sem compromisso.",
   Reparo:
     "Traga seu veículo para realizarmos o serviço já aprovado. Certifique-se de ter o orçamento confirmado antes de agendar.",
-  Retorno:
+  "Retorno de Garantia":
     "Agende um retorno para verificarmos o serviço realizado e garantirmos que tudo está dentro dos padrões de qualidade.",
+  "Vistoria Seguradora":
+    "Opção especialmente para seguradoras. Para avaliar os danos e a possibilidade do serviço.",
 };
 
 registerLocale("pt-BR", ptBR);
@@ -30,14 +32,40 @@ export function BookingStep() {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (!tooltipOpen) return;
+
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setTooltipOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setTooltipOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [tooltipOpen]);
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
 
-  const [blockedDates, setBlockedDates] = useState<{ Martelinho: string[], Pintura: string[][] }>({ Martelinho: [], Pintura: [] });
+  const [blockedDates, setBlockedDates] = useState<{ Martelinho: string[], Polimento: string[], Pintura: string[][] }>({ Martelinho: [], Polimento: [], Pintura: [] });
 
   useEffect(() => {
     if (!formData.service || formData.reason !== "Reparo") {
-      setBlockedDates({ Martelinho: [], Pintura: [] });
+      setBlockedDates({ Martelinho: [], Polimento: [], Pintura: [] });
       return;
     }
     async function fetchBlockedDates() {
@@ -56,6 +84,10 @@ export function BookingStep() {
     return blockedDates.Martelinho.map((date: string) => new Date(date + "T00:00:00"));
   }, [blockedDates]);
 
+  const polimentoBlocked = useMemo(() => {
+    return blockedDates.Polimento.map((date: string) => new Date(date + "T00:00:00"));
+  }, [blockedDates]);
+
   const pinturaIntervals = useMemo(() => {
     return blockedDates.Pintura.map((range: string[]) => {
       return { start: new Date(range[0]), end: new Date(range[1]) };
@@ -63,9 +95,9 @@ export function BookingStep() {
   }, [blockedDates]);
 
   const timeInterval = useMemo(() => {
-    if (formData.reason === "Orçamento") return 15;
+    if (formData.reason === "Orçamento" || formData.reason === "Vistoria Seguradora") return 15;
     if (formData.reason === "Reparo") return 30;
-    if (formData.reason === "Retorno") return 30;
+    if (formData.reason === "Retorno de Garantia") return 30;
     return 30;
   }, [formData.reason]);
 
@@ -198,18 +230,18 @@ export function BookingStep() {
     }
   }
 
-  const services = ["Martelinho de ouro", "Pintura e(ou) Funilaria"];
-  const reasons = ["Orçamento", "Reparo", "Retorno"];
+  const services = ["Martelinho de ouro", "Pintura e(ou) Funilaria", "Polimento Geral"];
+  const reasons = ["Orçamento", "Reparo", "Retorno de Garantia", "Vistoria Seguradora"];
 
   return (
     <Layout>
-      <main className="min-h-screen pt-32 pb-24 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto flex flex-col items-center">
+      <main className="min-h-screen pt-16 md:pt-32 pb-12 md:pb-24 px-3 md:px-12 lg:px-24 max-w-7xl mx-auto flex flex-col items-center">
         <StepProgress currentStep={3} />
 
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <form className="lg:col-span-7 space-y-8 bg-surface-container-low p-8 rounded-xl relative overflow-hidden shadow-[0_24px_48px_rgba(0,0,0,0.4)]" 
+          <form className="lg:col-span-7 space-y-8 bg-surface-container-low p-8 rounded-xl relative shadow-[0_24px_48px_rgba(0,0,0,0.4)]" 
                 onSubmit={handleSubmit}>
-            <div className="absolute top-0 left-0 w-full h-1 bg-surface-variant">
+            <div className="absolute top-0 left-0 w-full h-1 bg-surface-variant rounded-t-xl overflow-hidden">
               <div className="h-full bg-gradient-to-r from-primary-container to-primary w-full"></div>
             </div>
 
@@ -217,7 +249,7 @@ export function BookingStep() {
               
               <div className="flex flex-col gap-3">
                 <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Serviço</label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {services.map(srv => (
                     <button 
                       type="button" 
@@ -238,41 +270,78 @@ export function BookingStep() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <label className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Motivo do Agendamento</label>
-                  <div className="relative" ref={tooltipRef}>
+                  <div className="relative inline-flex items-center" ref={tooltipRef}>
                     <button
                       type="button"
                       aria-label="Informações sobre motivo do agendamento"
+                      aria-expanded={tooltipOpen}
                       onClick={() => setTooltipOpen(prev => !prev)}
-                      onBlur={() => setTimeout(() => setTooltipOpen(false), 150)}
-                      className="flex items-center justify-center w-4 h-4 rounded-full bg-surface-container-highest border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:border-primary/50 transition-colors cursor-pointer"
+                      className="flex items-center justify-center w-5 h-5 rounded-full bg-surface-container-highest border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:border-primary/50 transition-colors cursor-pointer"
+                      title="Clique para ver detalhes dos motivos"
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '12px', lineHeight: 1 }}>question_mark</span>
+                      <span className="material-symbols-outlined" style={{ fontSize: '13px', lineHeight: 1 }}>question_mark</span>
                     </button>
                     {tooltipOpen && (
-                      <div
-                        role="tooltip"
-                        className="absolute left-6 top-1/2 -translate-y-1/2 z-50 w-64 p-3 rounded-xl bg-surface-container-highest border border-outline-variant/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] text-on-surface"
-                      >
-                        {formData.reason ? (
-                          <>
-                            <p className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-1">{formData.reason}</p>
-                            <p className="font-body text-xs text-on-surface-variant leading-relaxed">{REASON_TOOLTIPS[formData.reason]}</p>
-                          </>
-                        ) : (
-                          <div className="space-y-3">
-                            {Object.entries(REASON_TOOLTIPS).map(([reason, desc]) => (
-                              <div key={reason}>
-                                <p className="font-label text-[10px] uppercase tracking-widest text-primary font-bold mb-0.5">{reason}</p>
-                                <p className="font-body text-xs text-on-surface-variant leading-relaxed">{desc}</p>
-                              </div>
-                            ))}
+                      <>
+                        {/* Mobile Backdrop */}
+                        <div
+                          className="fixed inset-0 bg-black/70 backdrop-blur-xs z-40 sm:hidden"
+                          onClick={() => setTooltipOpen(false)}
+                          aria-hidden="true"
+                        />
+
+                        {/* Responsive Tooltip Popover */}
+                        <div
+                          role="tooltip"
+                          className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-50 max-w-sm mx-auto sm:inset-auto sm:absolute sm:left-7 sm:top-1/2 sm:-translate-y-1/2 sm:w-80 sm:mx-0 p-4 rounded-xl bg-[#20201f] border border-[#d4af37]/30 shadow-[0_12px_40px_rgba(0,0,0,0.8)] text-[#e5e2e1] max-h-[80vh] overflow-y-auto"
+                        >
+                          <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#353535]">
+                            <div className="flex items-center gap-1.5 text-[#f2ca50]">
+                              <span className="material-symbols-outlined text-base">info</span>
+                              <span className="font-headline font-bold text-xs uppercase tracking-wider">
+                                Motivo do Agendamento
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setTooltipOpen(false)}
+                              className="text-[#d0c5af] hover:text-[#f2ca50] p-1 rounded-md hover:bg-[#353535] transition-colors"
+                              aria-label="Fechar guia de motivos"
+                            >
+                              <span className="material-symbols-outlined text-base leading-none">close</span>
+                            </button>
                           </div>
-                        )}
-                      </div>
+
+                          {formData.reason ? (
+                            <div className="space-y-2">
+                              <div>
+                                <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-[#f2ca50]/15 text-[#f2ca50] border border-[#f2ca50]/30 mb-1.5">
+                                  {formData.reason}
+                                </span>
+                                <p className="font-body text-xs text-[#d0c5af] leading-relaxed">
+                                  {REASON_TOOLTIPS[formData.reason]}
+                                </p>
+                              </div>
+                              <p className="text-[10px] text-[#d0c5af]/60 italic pt-1 border-t border-[#353535]/50">
+                                Clique em outro motivo abaixo para ver os detalhes.
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="space-y-2.5">
+                              {Object.entries(REASON_TOOLTIPS).map(([reason, desc]) => (
+                                <div key={reason} className="p-2.5 rounded-lg bg-[#1c1b1b] border border-[#353535]/60 hover:border-[#f2ca50]/30 transition-colors">
+                                  <p className="font-headline text-xs font-bold text-[#f2ca50] mb-0.5">{reason}</p>
+                                  <p className="font-body text-[11px] text-[#d0c5af] leading-relaxed">{desc}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {reasons.map(rsn => (
                     <button 
                       type="button" 
@@ -314,7 +383,15 @@ export function BookingStep() {
                         if (isBrazilianHoliday(date)) return false;
                         return true;
                       }}
-                      excludeDates={formData.service === "Martelinho de ouro" && formData.reason === "Reparo" ? martelinhoBlocked : []}
+                      excludeDates={
+                        formData.reason === "Reparo"
+                          ? formData.service === "Martelinho de ouro"
+                            ? martelinhoBlocked
+                            : formData.service === "Polimento Geral"
+                              ? polimentoBlocked
+                              : []
+                          : []
+                      }
                       excludeDateIntervals={formData.service === "Pintura e(ou) Funilaria" && formData.reason === "Reparo" ? pinturaIntervals : []}
                       disabled={!formData.service || !formData.reason}
                     />

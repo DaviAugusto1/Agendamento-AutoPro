@@ -50,13 +50,15 @@ export function CarStep() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!formData.car_model) { setModal({ isOpen: true, title: 'Atenção', message: 'Digite o modelo do veículo!', type: 'error' }); return; }
     if (!formData.car_plate) { setModal({ isOpen: true, title: 'Atenção', message: 'Digite a placa do carro!', type: 'error' }); return; }
+    if (formData.car_plate.length < 7 || !/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(formData.car_plate)) { setModal({ isOpen: true, title: 'Atenção', message: 'Placa inválida! Formato esperado: ABC1D23 ou ABC1234', type: 'error' }); return; }
+    if (!formData.car_model) { setModal({ isOpen: true, title: 'Atenção', message: 'Digite o modelo do veículo!', type: 'error' }); return; }
+    if (formData.car_year && String(formData.car_year).length > 4) { setModal({ isOpen: true, title: 'Atenção', message: 'O ano do veículo não pode ter mais de 4 dígitos!', type: 'error' }); return; }
     navigate('/booking');
   }
   return (
     <Layout>
-      <main className="min-h-screen pt-32 pb-24 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto flex flex-col items-center">
+      <main className="min-h-screen pt-20 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 lg:px-12 xl:px-24 max-w-7xl mx-auto flex flex-col items-center">
         <StepProgress currentStep={2} />
 
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -80,14 +82,33 @@ export function CarStep() {
                   <input type="text" placeholder="ABC1234" required maxLength={7}
                          value={formData.car_plate}
                          onChange={(e) => {
-                           const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 7);
-                           setFormData({ ...formData, car_plate: value });
-                           if (value.length === 0 && autoFilled) {
+                           const raw = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+                           // Enforce plate format: LLL N L/N NN
+                           let sanitized = "";
+                           for (let i = 0; i < raw.length && sanitized.length < 7; i++) {
+                             const pos = sanitized.length;
+                             const ch = raw[i];
+                             if (pos < 3) {
+                               // Positions 0-2: letters only
+                               if (/[A-Z]/.test(ch)) sanitized += ch;
+                             } else if (pos === 3) {
+                               // Position 3: number only
+                               if (/[0-9]/.test(ch)) sanitized += ch;
+                             } else if (pos === 4) {
+                               // Position 4: letter or number
+                               if (/[A-Z0-9]/.test(ch)) sanitized += ch;
+                             } else {
+                               // Positions 5-6: numbers only
+                               if (/[0-9]/.test(ch)) sanitized += ch;
+                             }
+                           }
+                           setFormData({ ...formData, car_plate: sanitized });
+                           if (sanitized.length === 0 && autoFilled) {
                              setFormData({ ...formData, car_plate: "", car_color: "", car_year: "", brand_id: null, car_model: "" });
                              setAutoFilled(false);
                            }
                          }}
-                         className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-0 py-4 font-headline text-2xl tracking-widest text-primary focus:border-primary transition-all placeholder:text-on-surface-variant/20" />
+                         className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-[10px] py-4 font-headline text-2xl tracking-widest text-primary focus:border-primary transition-all placeholder:text-on-surface-variant/20" />
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -109,7 +130,7 @@ export function CarStep() {
                     <label className="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant opacity-70">Modelo</label>
                     <input type="text" placeholder="Ex: 911 Carrera" required disabled={autoFilled}
                            value={formData.car_model} onChange={(e) => setFormData({ ...formData, car_model: e.target.value })}
-                           className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-0 py-3 font-body text-base text-on-surface focus:border-primary transition-all placeholder:text-on-surface-variant/20 disabled:opacity-50" />
+                           className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-[10px] py-3 font-body text-base text-on-surface focus:border-primary transition-all placeholder:text-on-surface-variant/20 disabled:opacity-50" />
                   </div>
                 </div>
 
@@ -118,13 +139,16 @@ export function CarStep() {
                     <label className="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant opacity-70">Cor</label>
                     <input type="text" placeholder="Ex: Grigio Telesto" 
                            value={formData.car_color} onChange={(e) => setFormData({ ...formData, car_color: e.target.value })}
-                           className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-0 py-3 font-body text-base text-on-surface focus:border-primary transition-all placeholder:text-on-surface-variant/20" />
+                           className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-[10px] py-3 font-body text-base text-on-surface focus:border-primary transition-all placeholder:text-on-surface-variant/20" />
                   </div>
                   <div className="space-y-2">
                     <label className="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant opacity-70">Ano</label>
-                    <input type="number" placeholder="2024" 
-                           value={formData.car_year || ""} onChange={(e) => setFormData({ ...formData, car_year: e.target.value ? Number(e.target.value) : "" })}
-                           className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-0 py-3 font-body text-base text-on-surface focus:border-primary transition-all placeholder:text-on-surface-variant/20" />
+                    <input type="number" placeholder="2024" maxLength={4}
+                           value={formData.car_year || ""} onChange={(e) => {
+                             const val = e.target.value.slice(0, 4);
+                             setFormData({ ...formData, car_year: val ? Number(val) : "" });
+                           }}
+                           className="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant/20 px-[10px] py-3 font-body text-base text-on-surface focus:border-primary transition-all placeholder:text-on-surface-variant/20" />
                   </div>
                 </div>
 
@@ -140,7 +164,7 @@ export function CarStep() {
               </form>
             </div>
 
-            <div className="flex items-start gap-4 p-4 rounded-lg bg-surface-container-low/50 border-l-2 border-primary/30">
+            <div className="flex items-start gap-4 p-4 rounded-lg bg-surface-container-low/50 border-l-[10px] border-primary/30">
               <span className="material-symbols-outlined text-primary text-xl">info</span>
               <p className="text-xs text-on-surface-variant leading-relaxed font-label">
                 Não encontrou seu modelo? Não se preocupe. Preencha o mais próximo possível e detalhe no próximo passo ou fale diretamente com um especialista através do Vault.
