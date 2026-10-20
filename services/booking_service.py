@@ -12,7 +12,10 @@ from constants import (
     BUSINESS_HOURS_END,
     MAX_REPAIRS_PER_WEEK,
     MAX_MARTELINHOS_PER_DAY,
+    MAX_POLIMENTOS_PER_DAY,
     SERVICE_MARTELINHO,
+    SERVICE_POLIMENTO,
+    DAILY_CAPPED_SERVICES,
     WORK_WEEK_LENGTH_DAYS,
 )
 
@@ -103,10 +106,10 @@ def _validate_repair_capacity(
     reason: str,
     service: str | None,
 ) -> None:
-    """Enforce weekly repair and daily martelinho limits."""
+    """Enforce weekly repair and daily service-specific limits."""
     monday, friday = _get_week_boundaries(booking_dt)
 
-    if reason == "Reparo" and service != SERVICE_MARTELINHO:
+    if reason == "Reparo" and service not in DAILY_CAPPED_SERVICES:
         repairs = repository.count_repairs_by_week(db, monday, friday)
         if repairs >= MAX_REPAIRS_PER_WEEK:
             raise HTTPException(
@@ -120,6 +123,14 @@ def _validate_repair_capacity(
             raise HTTPException(
                 status_code=409,
                 detail="Quantidade de limite diário de serviços de martelinhos já alcançado!",
+            )
+
+    if service == SERVICE_POLIMENTO and reason == "Reparo":
+        polimentos = repository.count_polimentos_by_day(db, booking_dt)
+        if polimentos >= MAX_POLIMENTOS_PER_DAY:
+            raise HTTPException(
+                status_code=409,
+                detail="Quantidade de limite diário de serviços de polimento já alcançado!",
             )
 
 
@@ -237,10 +248,12 @@ def delete(db: Session, id: int):
 
 def get_invalid_days(db: Session):
     martelinho_days = repository.get_blocked_martelinho_days(db)
+    polimento_days = repository.get_blocked_polimento_days(db)
     painting_weeks = repository.get_blocked_painting_weeks(db)
 
     blocked_dates = {
         "Martelinho": [d.isoformat() for d in martelinho_days],
+        "Polimento": [d.isoformat() for d in polimento_days],
         "Pintura": [],
     }
 

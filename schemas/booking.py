@@ -59,6 +59,8 @@ class BookingDetailedResponse(BaseModel):
     car_color: str | None = None
     car_year: int | None = None
     confirmation: str = "N"
+    customer_name: str | None = None
+    customer_phone: str | None = None
 
 
 class PaintingPerDayResponse(BaseModel):

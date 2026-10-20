@@ -1,14 +1,17 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, text, case, literal
-from models import Booking, Car_details, Car_brands, Customer_booking
+from models import Booking, Car_details, Car_brands, Customer_booking, Customer
 from datetime import date, time
 from sqlalchemy.exc import IntegrityError
 from schemas.booking import BookingUpdate
 from constants import (
     MAX_MARTELINHOS_PER_DAY,
+    MAX_POLIMENTOS_PER_DAY,
     MAX_REPAIRS_PER_WEEK,
     SERVICE_MARTELINHO,
+    SERVICE_POLIMENTO,
     SERVICE_PINTURA,
+    DAILY_CAPPED_SERVICES,
     CONFIRMATION_YES,
     CONFIRMATION_NO,
 )
@@ -108,7 +111,7 @@ def count_repairs_by_week(db: Session, start: date, end: date):
         .filter(
             Booking.reason == "Reparo",
             Booking.booking_dt.between(start, end),
-            Booking.service != SERVICE_MARTELINHO,
+            Booking.service.notin_(DAILY_CAPPED_SERVICES),
         )
         .scalar()
     )
@@ -143,6 +146,21 @@ def get_blocked_martelinho_days(db: Session):
     return [row[0] for row in result]
 
 
+def get_blocked_polimento_days(db: Session):
+    """Return days where Polimento Geral has reached its independent daily limit."""
+    result = (
+        db.query(Booking.booking_dt)
+        .filter(
+            Booking.service == SERVICE_POLIMENTO,
+            Booking.reason == "Reparo",
+        )
+        .group_by(Booking.booking_dt)
+        .having(func.count(Booking.booking_id) >= MAX_POLIMENTOS_PER_DAY)
+        .all()
+    )
+    return [row[0] for row in result]
+
+
 def count_martelinhos_by_day(db: Session, day: date):
     return (
         db.query(func.count(Booking.booking_id))
@@ -150,6 +168,19 @@ def count_martelinhos_by_day(db: Session, day: date):
             Booking.booking_dt == day,
             Booking.reason == "Reparo",
             Booking.service == SERVICE_MARTELINHO,
+        )
+        .scalar()
+    )
+
+
+def count_polimentos_by_day(db: Session, day: date):
+    """Count Polimento Geral bookings for a given day (independent limit)."""
+    return (
+        db.query(func.count(Booking.booking_id))
+        .filter(
+            Booking.booking_dt == day,
+            Booking.reason == "Reparo",
+            Booking.service == SERVICE_POLIMENTO,
         )
         .scalar()
     )
@@ -202,7 +233,7 @@ def delete(db: Session, booking: Booking):
 # ── Enriched Queries (Manager Dashboard) ───────────────────────────
 
 def _base_detailed_query(db: Session):
-    """Build the base query that joins Booking → Car_details → Car_brands and Customer_booking."""
+    """Build the base query that joins Booking → Car_details → Car_brands and Customer_booking → Customer."""
     return (
         db.query(
             Booking.booking_id,
@@ -217,10 +248,13 @@ def _base_detailed_query(db: Session):
             Car_details.car_color,
             Car_details.car_year,
             func.coalesce(Customer_booking.confirmation, CONFIRMATION_NO).label("confirmation"),
+            Customer.name.label("customer_name"),
+            Customer.phone_number.label("customer_phone"),
         )
         .outerjoin(Car_details, Booking.details_id == Car_details.details_id)
         .outerjoin(Car_brands, Car_details.brand_id == Car_brands.brand_id)
         .outerjoin(Customer_booking, Booking.booking_id == Customer_booking.booking_id)
+        .outerjoin(Customer, Customer_booking.customer_id == Customer.customer_id)
     )
 
 
